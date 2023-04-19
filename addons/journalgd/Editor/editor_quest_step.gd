@@ -51,10 +51,11 @@ func _on_delete_node_button_up():
 
 
 func get_goals() -> Array:
-	return $Scroll/GoalsContainer.get_children().map(func(x): return x as EditorQuestGoal)
+	return $Scroll/GoalsContainer.get_children()
 
 
 func _on_add_goal() -> EditorQuestGoal:
 	var n = GOAL_PREFAB.instantiate()
-	add_child(n)
+	$Scroll/GoalsContainer.add_child(n)
+	n.owner = self
 	return n

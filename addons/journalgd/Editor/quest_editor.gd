@@ -54,13 +54,14 @@ func save():
 	# Get steps
 	for s in get_children():
 		var q_step = QuestStep.new()
-		# Pack step
+		q_root.add_child(q_step)
+		q_step.owner = q_root
 		print("Packing step %s" % q_step.name)
 		# Get connections
 		var connections:Array
 		connections = get_connection_list() \
-			.filter(func(c): c.from == q_step.name) \
-			.map(func(c): get_node(c.to))
+			.filter(func(c): return c.from == q_step.name) \
+			.map(func(c): return get_node(c.to))
 		q_step.next_steps = connections
 			#TODO: Map keys if branch
 		
@@ -77,16 +78,16 @@ func save():
 			
 			print("Packing goal %s" % q_goal.name)
 			q_step.add_child(q_goal)
-			q_goal.owner = q_step
+			print("setting owner")
+			q_goal.owner = q_root
 			# Load info into node
+			print("setting values")
 			q_goal.amount = e_goal.amount
 			q_goal.only_while_active = e_goal.only_while_active
 			q_goal.optional = e_goal.optional
 			q_goal.baseID = e_goal.base_id
 			q_goal.refID = e_goal.ref_id
 			
-		q_root.add_child(q_step)
-		q_step.owner = q_root
 		# Load info
 		q_step.type = (s as EditorQuestStep).step_type
 		q_step.is_final_step = (s as EditorQuestStep).is_exit
@@ -98,6 +99,7 @@ func save():
 	# Pack and save
 	var result = Quest.new()
 	var scene = PackedScene.new()
+	q_root.print_tree_pretty()
 	scene.pack(q_root)
 	result.quest_id = q_root.name
 	result.quest_scene = scene
@@ -107,20 +109,24 @@ func save():
 func open(q:Quest) -> void:
 	# Get rid of all children
 	for s in get_children():
-		s.queue_free()
-	# create steps
+		delete_node(s.name)
+	# Create steps
 	q_name_input.text = q.quest_id # set quest ID
-	
-	var quest_scene = q.quest_scene.instantiate()
+	var quest_scene = q.quest_scene.instantiate() # unpack scene to analyze
+	var to_connect:Array[Dictionary] = []
+	quest_scene.print_tree_pretty()
 	# Iterate through steps, create new
 	for step in quest_scene.get_children():
 		# create new step
+		print("unpacking step %s" % step.name)
 		var new_step = _on_add_new_button_down()
 		# load goals
 		for goal in step.get_children():
 			var s_goal = goal as QuestGoal
 			var e_goal = new_step._on_add_goal()
+			print("unpacking goal %s" % s_goal.name)
 			# Load values
+			# TODO: key
 			e_goal.optional = s_goal.optional
 			e_goal.amount = s_goal.amount
 			e_goal.base_id = s_goal.baseID
@@ -131,3 +137,14 @@ func open(q:Quest) -> void:
 		new_step.step_type = step.type
 		new_step.is_exit = step.is_final_step
 		new_step.position = step.editor_coordinates
+		# Add connection
+		for c in step.next_steps:
+			to_connect.append({
+				"from" : step.name,
+				"to" : c.to
+			})
+	# Connect all
+	# TODO: Branches
+	for conn in to_connect:
+		print("Connecting %s to %s" % [conn["from"], conn["to"]] )
+		make_connection(find_child(conn["from"]), 0, find_child(conn["to"]), 0)
