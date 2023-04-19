@@ -60,7 +60,7 @@ func register_quest_event(path:String):
 		if qnode == null:
 			return
 		qnode.register_step_event(chunks[1])
-	else: # if jsut the key
+	else: # if just the key
 		for q in get_children().map(func(x): return x as QuestNode):
 			q.register_step_event(path)
 

@@ -35,3 +35,13 @@ func _get_plugin_icon() -> Texture2D:
 func _make_visible(state:bool) -> void:
 	if quest_panel_instance:
 		quest_panel_instance.visible = state
+
+
+func _handles(object: Object) -> bool:
+	return object is Quest
+
+
+func _edit(object: Object) -> void:
+	# TODO: Open and edit quest
+	print("Opening quest")
+	quest_panel_instance.find_child("GraphEdit").open(object)

@@ -21,3 +21,7 @@ project/assembly_name="QuestEditor"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/journalgd/plugin.cfg")
+
+[journalgd]
+
+quests_directory="res://Quests"

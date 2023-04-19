@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=2 format=3 uid="uid://bpb1avxk7ml0j"]
+
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="1_3bhkm"]
+
+[resource]
+script = ExtResource("1_3bhkm")
+quest_id = ""
