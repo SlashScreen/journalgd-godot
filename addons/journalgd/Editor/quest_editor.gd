@@ -126,7 +126,7 @@ func open(q:Quest) -> void:
 			var e_goal = new_step._on_add_goal()
 			print("unpacking goal %s" % s_goal.name)
 			# Load values
-			# TODO: key
+			e_goal.goal_key = s_goal.name
 			e_goal.optional = s_goal.optional
 			e_goal.amount = s_goal.amount
 			e_goal.base_id = s_goal.baseID
@@ -148,3 +148,9 @@ func open(q:Quest) -> void:
 	for conn in to_connect:
 		print("Connecting %s to %s" % [conn["from"], conn["to"]] )
 		make_connection(find_child(conn["from"]), 0, find_child(conn["to"]), 0)
+
+
+func _on_clear_pressed() -> void:
+	q_name_input.text = ""
+	for s in get_children():
+		delete_node(s.name)
