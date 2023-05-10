@@ -13,11 +13,13 @@ func _enter_tree() -> void:
 	quest_panel_instance = QuestWindow.instantiate() # Instantiate editor
 	get_editor_interface().get_editor_main_screen().add_child(quest_panel_instance) # Add to main screen
 	_make_visible(false) #hide by default
+	ProjectSettings.set_setting("journalgd/quests_path", "res://Quests")
 
 
 func _exit_tree() -> void:
 	if quest_panel_instance:
 		quest_panel_instance.queue_free() # destroy panel
+	ProjectSettings.set_setting("journalgd/quests_path", null)
 
 
 func _has_main_screen() -> bool:

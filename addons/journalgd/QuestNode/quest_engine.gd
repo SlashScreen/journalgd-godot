@@ -13,7 +13,7 @@ var complete_quests:Array[String]
 
 ## Loads all quests from the [code]biznasty/quests_directory[/code] project setting, and then instantiates them as child [QuestObject]s.
 func load_quest_objects():
-	_load_dir(ProjectSettings.get_setting("skelerealms/quests_directory"))
+	_load_dir(ProjectSettings.get_setting("journalgd/quests_path"))
 
 
 func _load_dir(path:String):
