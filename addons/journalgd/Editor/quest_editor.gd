@@ -42,6 +42,13 @@ func delete_node(n:String):
 	get_node(n).queue_free()
 
 
+func find_step(sname:StringName) -> EditorQuestGoal:
+	for c in get_children():
+		if c.name == sname:
+			return c
+	return null
+
+
 func save():
 	if q_name_input.text == "":
 		print("Write a quest name to save.")
@@ -56,13 +63,20 @@ func save():
 		var q_step = QuestStep.new()
 		q_root.add_child(q_step)
 		q_step.owner = q_root
-		print("Packing step %s" % q_step.name)
+		print("Packing step %s" % s.name)
+		print(get_connection_list())
 		# Get connections
 		var connections:Array
 		connections = get_connection_list() \
-			.filter(func(c): return c.from == q_step.name) \
-			.map(func(c): return get_node(c.to))
-		q_step.next_steps = connections
+			.filter(func(c):
+				print("from: %s step name: %s" %[c["from"], s.name])
+				return c["from"] == s.name
+				)\
+			.map(func(c): return c["to"])
+		if not connections.is_empty(): 
+			print("connections: %s" % connections)
+			q_step.next_steps = connections
+			print(q_step.next_steps)
 			#TODO: Map keys if branch
 		
 		# Get goals
@@ -118,7 +132,8 @@ func open(q:Quest) -> void:
 	# Iterate through steps, create new
 	for step in quest_scene.get_children():
 		# create new step
-		print("unpacking step %s" % step.name)
+		print("unpacking step %s - %s" % [step.name, step is QuestStep])
+		print(step.next_steps)
 		var new_step = _on_add_new_button_down()
 		# load goals
 		for goal in step.get_children():
@@ -141,13 +156,13 @@ func open(q:Quest) -> void:
 		for c in step.next_steps:
 			to_connect.append({
 				"from" : step.name,
-				"to" : c.to
+				"to" : c
 			})
 	# Connect all
 	# TODO: Branches
 	for conn in to_connect:
 		print("Connecting %s to %s" % [conn["from"], conn["to"]] )
-		make_connection(find_child(conn["from"]), 0, find_child(conn["to"]), 0)
+		make_connection(conn["from"], 0, conn["to"], 0)
 
 
 func _on_clear_pressed() -> void:

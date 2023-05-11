@@ -1,24 +1,24 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://cbolubyijgqqi"]
+[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://b03aypp0pyhct"]
 
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_bebo5"]
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_cd3mu"]
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_0mrak"]
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="4_crtys"]
 
-[sub_resource type="PackedScene" id="PackedScene_gs7to"]
+[sub_resource type="PackedScene" id="PackedScene_7rlum"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
 "editable_instances": [],
-"names": PackedStringArray("quest", "script", "Node", "s1", "g1a", "s2", "g1b"),
+"names": PackedStringArray("quest", "script", "Node", "s1", "next_steps", "editor_coordinates", "g1a", "s2", "g1b"),
 "node_count": 5,
 "node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 1, 1, 1, 0, 1, 0, 2, 4, -1, 1, 1, 2, 0, 0, 0, 2, 5, -1, 1, 1, 1, 0, 3, 0, 2, 6, -1, 1, 1, 2, 0),
-"variants": [ExtResource("1_bebo5"), ExtResource("2_cd3mu"), ExtResource("3_0mrak")],
+"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 3, 1, 1, 4, 2, 5, 3, 0, 1, 0, 2, 6, -1, 1, 1, 4, 0, 0, 0, 2, 7, -1, 2, 1, 1, 5, 5, 0, 3, 0, 2, 8, -1, 1, 1, 4, 0),
+"variants": [ExtResource("1_bebo5"), ExtResource("2_cd3mu"), [&"s4"], Vector2(315.177, 458.057), ExtResource("3_0mrak"), Vector2(652.45, 451.694)],
 "version": 3
 }
 
 [resource]
 script = ExtResource("4_crtys")
 quest_id = "quest"
-quest_scene = SubResource("PackedScene_gs7to")
+quest_scene = SubResource("PackedScene_7rlum")

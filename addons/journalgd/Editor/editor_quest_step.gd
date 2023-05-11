@@ -15,6 +15,7 @@ var step_name:String:
 	get: 
 		return ($StepName as LineEdit).text
 	set(val):
+		name = val
 		($StepName as LineEdit).text = val
 var next_connections:Array[String]
 var step_type:QuestStep.StepType:

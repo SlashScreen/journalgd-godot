@@ -25,3 +25,4 @@ enabled=PackedStringArray("res://addons/journalgd/plugin.cfg")
 [journalgd]
 
 quests_directory="res://Quests"
+quests_path="res://Quests"

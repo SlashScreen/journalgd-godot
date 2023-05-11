@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://civ8t6cg025f"]
+
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_mpcgk"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_db4ck"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_f4xqu"]
+
+[node name="quest" type="Node"]
+script = ExtResource("1_mpcgk")
+
+[node name="s1" type="Node" parent="."]
+script = ExtResource("2_db4ck")
+
+[node name="g1a" type="Node" parent="s1"]
+script = ExtResource("3_f4xqu")
+
+[node name="s2" type="Node" parent="."]
+script = ExtResource("2_db4ck")
+
+[node name="g1b" type="Node" parent="s2"]
+script = ExtResource("3_f4xqu")
