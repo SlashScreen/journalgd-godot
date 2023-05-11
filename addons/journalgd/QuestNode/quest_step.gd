@@ -6,7 +6,7 @@ extends Node
 var type:StepType = StepType.ALL
 var is_final_step:bool = false
 var is_already_complete:bool
-@export var next_steps:Array = []#Dictionary = {}
+@export var next_steps:Array = []
 @export var editor_coordinates:Vector2
 
 var next_step:QuestStep:

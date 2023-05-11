@@ -51,6 +51,19 @@ func _on_delete_node_button_up():
 	get_parent().delete_node(name)
 
 
+func _set_is_goal(state:bool) -> void:
+	print("set is goal")
+	if state:
+		if is_exit:
+			return
+		for i in get_goals().size():
+			set_slot_enabled_right(i, true)
+	else:
+		for i in get_connection_output_count():
+			set_slot_enabled_right(i, false)
+		set_slot_enabled_right(0, not is_exit)
+
+
 func get_goals() -> Array:
 	return $Scroll/GoalsContainer.get_children()
 
@@ -60,3 +73,8 @@ func _on_add_goal() -> EditorQuestGoal:
 	$Scroll/GoalsContainer.add_child(n)
 	n.owner = self
 	return n
+
+
+func _ready() -> void:
+	$StepType.item_selected.connect(func(x:int): _set_is_goal(x == 2))
+	$StepName.text_submitted.connect(func(x:String): name = x)
