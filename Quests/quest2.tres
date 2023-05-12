@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://hj4fado3ai3b"]
+[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://r155v5deofie"]
 
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_1cem4"]
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_i54w8"]
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="2_lvdlo"]
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_lgsqr"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_dxu72"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_652qv"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_ao40v"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="4_u352e"]
 
 [sub_resource type="PackedScene" id="PackedScene_scq1s"]
 _bundled = {
@@ -14,11 +14,11 @@ _bundled = {
 "node_count": 9,
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 4, 1, 1, 4, 2, 5, 3, 6, 4, 0, 1, 0, 2, 7, -1, 1, 1, 5, 0, 0, 0, 2, 8, -1, 4, 1, 1, 4, 2, 5, 3, 6, 6, 0, 3, 0, 2, 9, -1, 1, 1, 5, 0, 0, 0, 2, 10, -1, 4, 1, 1, 4, 2, 5, 3, 6, 7, 0, 5, 0, 2, 11, -1, 1, 1, 5, 0, 0, 0, 2, 12, -1, 4, 1, 1, 4, 2, 5, 3, 6, 8, 0, 7, 0, 2, 13, -1, 1, 1, 5, 0),
-"variants": [ExtResource("1_1cem4"), ExtResource("2_i54w8"), [&"step 2", &"step 3", &"step 4"], [&"Goal"], Vector2(1270.59, 477.499), ExtResource("3_lgsqr"), Vector2(1270.59, 81.499), Vector2(632.589, 477.499), Vector2(170.589, 477.499)],
+"variants": [ExtResource("1_dxu72"), ExtResource("2_652qv"), [&"step 2", &"step 3", &"step 4"], [&"Goal"], Vector2(1270.59, 477.499), ExtResource("3_ao40v"), Vector2(1270.59, 81.499), Vector2(632.589, 477.499), Vector2(170.589, 477.499)],
 "version": 3
 }
 
 [resource]
-script = ExtResource("2_lvdlo")
+script = ExtResource("4_u352e")
 quest_id = "quest"
 quest_scene = SubResource("PackedScene_scq1s")

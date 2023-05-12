@@ -3,7 +3,9 @@
 class_name QuestEditor
 extends GraphEdit
 
-@export var node_prefab:PackedScene
+
+var STEP_PREFAB = preload("res://addons/journalgd/Editor/step_prefab.tscn")
+
 var q_name_input:LineEdit
 
 
@@ -14,7 +16,7 @@ func _ready():
 
 
 func _on_add_new_button_down() -> EditorQuestStep:
-	var n = node_prefab.instantiate()
+	var n = STEP_PREFAB.instantiate()
 	add_child(n)
 	return n
 
@@ -49,7 +51,7 @@ func find_step(sname:StringName) -> EditorQuestGoal:
 	return null
 
 
-func save():
+func save() -> void:
 	if q_name_input.text == "":
 		print("Write a quest name to save.")
 		return
@@ -58,56 +60,23 @@ func save():
 	var q_root:QuestNode = QuestNode.new()
 	q_root.name = q_name_input.text
 	
+	var owned_nodes = []
 	# Get steps
 	for s in get_children():
-		var q_step = QuestStep.new()
+		var q_step = QuestStep.new(s)
+		q_step.goal_order = s.mapped_goals
 		q_root.add_child(q_step)
-		q_step.owner = q_root
-		print("Packing step %s" % s.name)
-		print(get_connection_list())
-		# Get connections
-		var connections:Array
-		connections = get_connection_list() \
-			.filter(func(c):
-				print("from: %s step name: %s" %[c["from"], s.name])
-				return c["from"] == s.name
-				)\
-			.map(func(c): return c["to"])
-		if not connections.is_empty(): 
-			print("connections: %s" % connections)
-			q_step.next_steps = connections
-			print(q_step.next_steps)
-			#TODO: Map keys if branch
 		
-		# Get goals
-		for g in (s as EditorQuestStep).get_goals(): 
-			var q_goal:QuestGoal = QuestGoal.new()
-			var e_goal = g as EditorQuestGoal
-			
-			q_goal.name = e_goal.goal_key
-			# skip if goal name empty
-			if q_goal.name.is_empty() or q_goal.name == "":
-				print("empty name on goal")
-				continue
-			
-			print("Packing goal %s" % q_goal.name)
-			q_step.add_child(q_goal)
-			print("setting owner")
-			q_goal.owner = q_root
-			# Load info into node
-			print("setting values")
-			q_goal.amount = e_goal.amount
-			q_goal.only_while_active = e_goal.only_while_active
-			q_goal.optional = e_goal.optional
-			q_goal.baseID = e_goal.base_id
-			q_goal.refID = e_goal.ref_id
-			
-		# Load info
-		q_step.type = (s as EditorQuestStep).step_type
-		q_step.is_final_step = (s as EditorQuestStep).is_exit
-		q_step.name = (s as EditorQuestStep).step_name
-		q_step.editor_coordinates = (s as EditorQuestStep).position
+		var cns = get_connection_list().filter(func(x): return x["from"])
+		cns.sort_custom(func(a,b): return a["from_port"] < b["from_port"])
+		q_step.next_steps = cns.map(func(x): return x["to"])
+		
+		owned_nodes.append(q_step)
+		for g in q_step.get_children():
+			owned_nodes.append(g)
 	
+	for n in owned_nodes:
+		n.owner = q_root
 	
 	print("Packed quest %s with %s children" % [q_root.name, q_root.get_child_count()])
 	# Pack and save
@@ -131,38 +100,15 @@ func open(q:Quest) -> void:
 	quest_scene.print_tree_pretty()
 	# Iterate through steps, create new
 	for step in quest_scene.get_children():
-		# create new step
-		print("unpacking step %s - %s" % [step.name, step is QuestStep])
-		print(step.next_steps)
-		var new_step = _on_add_new_button_down()
-		# load goals
-		for goal in step.get_children():
-			var s_goal = goal as QuestGoal
-			var e_goal = new_step._on_add_goal()
-			print("unpacking goal %s" % s_goal.name)
-			# Load values
-			e_goal.goal_key = s_goal.name
-			e_goal.optional = s_goal.optional
-			e_goal.amount = s_goal.amount
-			e_goal.base_id = s_goal.baseID
-			e_goal.ref_id = s_goal.refID
-			e_goal.only_while_active = s_goal.only_while_active
-		# Load info
-		new_step.step_name = step.name
-		new_step.step_type = step.type
-		new_step.is_exit = step.is_final_step
-		new_step.position = step.editor_coordinates
-		# Add connection
-		for c in step.next_steps:
-			to_connect.append({
-				"from" : step.name,
-				"to" : c
-			})
+		var e_q = STEP_PREFAB.instantiate()
+		e_q.setup(step)
+		for i in (step as QuestStep).goal_order.size():
+			to_connect.append({"from": step.name, "to": (step as QuestStep).next_steps[i], "from_port": i})
+		add_child(e_q)
 	# Connect all
-	# TODO: Branches
 	for conn in to_connect:
-		print("Connecting %s to %s" % [conn["from"], conn["to"]] )
-		make_connection(conn["from"], 0, conn["to"], 0)
+		print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
+		make_connection(conn["from"], conn["from_port"], conn["to"], 0)
 
 
 func _on_clear_pressed() -> void:

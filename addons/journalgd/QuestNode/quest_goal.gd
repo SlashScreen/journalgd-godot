@@ -12,9 +12,20 @@ var already_satisfied:bool = false
 @export var refID:String
 @export var baseID:String
 @export var only_while_active:bool = true
-
 # TODO: Multiple events to satisfy, match against refID
 # TODO: Allow undoing events
+
+
+func _init(eqg:EditorQuestGoal = null) -> void:
+	if not eqg:
+		return
+	optional = eqg.optional
+	amount = eqg.amount
+	refID = eqg.ref_id
+	baseID = eqg.base_id
+	only_while_active = eqg.only_while_active
+	name = eqg.goal_key
+
 
 ## Evaluate whether this has been satisfied or not.
 func evaluate(is_active_step:bool) -> bool:

@@ -37,3 +37,12 @@ var only_while_active:bool:
 
 func _on_delete_pressed() -> void:
 	queue_free()
+
+
+func setup(eg:QuestGoal) -> void:
+	goal_key = eg.name
+	optional = eg.optional
+	base_id = eg.baseID
+	ref_id = eg.refID
+	amount = eg.amount
+	only_while_active = eg.only_while_active

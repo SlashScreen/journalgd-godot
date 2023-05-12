@@ -39,6 +39,16 @@ var step_type:QuestStep.StepType:
 				$StepType.select(2)
 			_:
 				$StepType.select(0)
+var mapped_goals:Array:
+	get:
+		return get_goals().map(func(x:EditorQuestGoal): return x.name)
+
+
+func setup(qs:QuestStep) -> void:
+	is_exit = qs.is_final_step
+	step_name = qs.name
+	step_type = qs.type
+	position = qs.editor_coordinates
 
 
 func _update_is_exit(val:bool):
@@ -70,6 +80,14 @@ func get_goals() -> Array:
 
 func _on_add_goal() -> EditorQuestGoal:
 	var n = GOAL_PREFAB.instantiate()
+	$Scroll/GoalsContainer.add_child(n)
+	n.owner = self
+	return n
+
+
+func add_goal(g:QuestGoal) -> EditorQuestGoal:
+	var n = GOAL_PREFAB.instantiate()
+	n.setup(g)
 	$Scroll/GoalsContainer.add_child(n)
 	n.owner = self
 	return n

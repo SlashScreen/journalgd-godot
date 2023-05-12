@@ -7,16 +7,27 @@ var type:StepType = StepType.ALL
 var is_final_step:bool = false
 var is_already_complete:bool
 @export var next_steps:Array = []
+@export var goal_order:Array = []
 @export var editor_coordinates:Vector2
-
 var next_step:QuestStep:
 	get:
 		if type == StepType.ALL:
 			return next_steps[0]
 		for g in get_children().map(func(x): x as QuestGoal):
 			if(g.evaluate(false)):
-				return next_steps[0]#[g.key] TODO: Key
+				return next_steps[goal_order.find(g.key)]
 		return null
+
+
+func _init(eqs:EditorQuestStep = null) -> void:
+	if not eqs:
+		return
+	type = eqs.step_type
+	is_final_step = eqs.is_exit
+	name = eqs.step_name
+	editor_coordinates = eqs.position
+	for g in eqs.get_goals():
+		add_child(QuestGoal.new(g))
 
 
 func evaluate(is_active_step:bool) -> bool:

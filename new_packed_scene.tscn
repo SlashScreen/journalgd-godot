@@ -1,20 +1,47 @@
 [gd_scene load_steps=4 format=3 uid="uid://civ8t6cg025f"]
 
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_mpcgk"]
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_db4ck"]
-[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_f4xqu"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_4kio3"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_ohx0b"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_doxhr"]
 
 [node name="quest" type="Node"]
-script = ExtResource("1_mpcgk")
+script = ExtResource("1_4kio3")
 
-[node name="s1" type="Node" parent="."]
-script = ExtResource("2_db4ck")
+[node name="step 2" type="Node" parent="."]
+script = ExtResource("2_ohx0b")
+next_steps = [&"@step@22445", &"@step@22459", &"@step@22468"]
+goal_order = [&"Goal", &"@Goal@22450"]
+editor_coordinates = Vector2(637.3, 448.3)
 
-[node name="g1a" type="Node" parent="s1"]
-script = ExtResource("3_f4xqu")
+[node name="goal 2 a" type="Node" parent="step 2"]
+script = ExtResource("3_doxhr")
 
-[node name="s2" type="Node" parent="."]
-script = ExtResource("2_db4ck")
+[node name="goal 2 b" type="Node" parent="step 2"]
+script = ExtResource("3_doxhr")
 
-[node name="g1b" type="Node" parent="s2"]
-script = ExtResource("3_f4xqu")
+[node name="step 1" type="Node" parent="."]
+script = ExtResource("2_ohx0b")
+next_steps = [&"@step@22445", &"@step@22459", &"@step@22468"]
+goal_order = [&"Goal"]
+editor_coordinates = Vector2(131.3, 448.3)
+
+[node name="goal 1 a" type="Node" parent="step 1"]
+script = ExtResource("3_doxhr")
+
+[node name="step 3" type="Node" parent="."]
+script = ExtResource("2_ohx0b")
+next_steps = [&"@step@22445", &"@step@22459", &"@step@22468"]
+goal_order = [&"Goal"]
+editor_coordinates = Vector2(1099.3, 74.3)
+
+[node name="goal 3 a" type="Node" parent="step 3"]
+script = ExtResource("3_doxhr")
+
+[node name="step 4" type="Node" parent="."]
+script = ExtResource("2_ohx0b")
+next_steps = [&"@step@22445", &"@step@22459", &"@step@22468"]
+goal_order = [&"Goal"]
+editor_coordinates = Vector2(1099.3, 514.3)
+
+[node name="goal 4 a" type="Node" parent="step 4"]
+script = ExtResource("3_doxhr")
