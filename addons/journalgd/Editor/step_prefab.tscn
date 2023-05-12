@@ -7,7 +7,6 @@ process_mode = 3
 offset_right = 268.0
 offset_bottom = 324.0
 mouse_filter = 1
-position_offset = Vector2(189, 207)
 slot/0/left_enabled = false
 slot/0/left_type = 1
 slot/0/left_color = Color(1, 1, 1, 1)
