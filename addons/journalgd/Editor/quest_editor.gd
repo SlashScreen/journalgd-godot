@@ -69,6 +69,8 @@ func save() -> void:
 		
 		var cns = get_connection_list().filter(func(x): return x["from"])
 		cns.sort_custom(func(a,b): return a["from_port"] < b["from_port"])
+		print("Connections found:")
+		print(cns)
 		q_step.next_steps = cns.map(func(x): return x["to"])
 		
 		owned_nodes.append(q_step)
@@ -106,9 +108,10 @@ func open(q:Quest) -> void:
 			to_connect.append({"from": step.name, "to": (step as QuestStep).next_steps[i], "from_port": i})
 		add_child(e_q)
 	# Connect all
-	for conn in to_connect:
-		print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
-		make_connection(conn["from"], conn["from_port"], conn["to"], 0)
+	print("to connect: %s" % to_connect)
+	#for conn in to_connect:
+	#	print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
+	#	make_connection(conn["from"], conn["from_port"], conn["to"], 0)
 
 
 func _on_clear_pressed() -> void:

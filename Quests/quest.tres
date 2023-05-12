@@ -5,20 +5,20 @@
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="2_lvdlo"]
 [ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_lgsqr"]
 
-[sub_resource type="PackedScene" id="PackedScene_scq1s"]
+[sub_resource type="PackedScene" id="PackedScene_pf61s"]
 _bundled = {
 "conn_count": 0,
 "conns": PackedInt32Array(),
 "editable_instances": [],
-"names": PackedStringArray("quest", "script", "Node", "step 4", "next_steps", "goal_order", "editor_coordinates", "goal 4", "step 3", "goal 3", "step 2", "goal 2 a", "step 1", "goal 1"),
-"node_count": 9,
+"names": PackedStringArray("quest", "script", "Node", "step 1", "next_steps", "goal_order", "editor_coordinates", "goal 1", "step 2", "goal 2 a", "goal 2 b", "step 3", "goal 3", "step 4", "goal 4"),
+"node_count": 10,
 "node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 4, 1, 1, 4, 2, 5, 3, 6, 4, 0, 1, 0, 2, 7, -1, 1, 1, 5, 0, 0, 0, 2, 8, -1, 4, 1, 1, 4, 2, 5, 3, 6, 6, 0, 3, 0, 2, 9, -1, 1, 1, 5, 0, 0, 0, 2, 10, -1, 4, 1, 1, 4, 2, 5, 3, 6, 7, 0, 5, 0, 2, 11, -1, 1, 1, 5, 0, 0, 0, 2, 12, -1, 4, 1, 1, 4, 2, 5, 3, 6, 8, 0, 7, 0, 2, 13, -1, 1, 1, 5, 0),
-"variants": [ExtResource("1_1cem4"), ExtResource("2_i54w8"), [&"step 2", &"step 3", &"step 4"], [&"Goal"], Vector2(1270.59, 477.499), ExtResource("3_lgsqr"), Vector2(1270.59, 81.499), Vector2(632.589, 477.499), Vector2(170.589, 477.499)],
+"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 4, 1, 1, 4, 2, 5, 3, 6, 4, 0, 1, 0, 2, 7, -1, 1, 1, 5, 0, 0, 0, 2, 8, -1, 4, 1, 1, 4, 2, 5, 6, 6, 7, 0, 3, 0, 2, 9, -1, 1, 1, 5, 0, 3, 0, 2, 10, -1, 1, 1, 5, 0, 0, 0, 2, 11, -1, 4, 1, 1, 4, 2, 5, 3, 6, 8, 0, 6, 0, 2, 12, -1, 1, 1, 5, 0, 0, 0, 2, 13, -1, 4, 1, 1, 4, 2, 5, 3, 6, 9, 0, 8, 0, 2, 14, -1, 1, 1, 5, 0),
+"variants": [ExtResource("1_1cem4"), ExtResource("2_i54w8"), [&"@step 3@32729", &"@step 2@32738", &"@step 4@32720"], [&"Goal"], Vector2(429.313, 346.297), ExtResource("3_lgsqr"), [&"Goal", &"@Goal@32764"], Vector2(854.947, 346.297), Vector2(1299.93, 114.133), Vector2(1299.93, 481.726)],
 "version": 3
 }
 
 [resource]
 script = ExtResource("2_lvdlo")
 quest_id = "quest"
-quest_scene = SubResource("PackedScene_scq1s")
+quest_scene = SubResource("PackedScene_pf61s")

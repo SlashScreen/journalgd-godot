@@ -49,6 +49,8 @@ func setup(qs:QuestStep) -> void:
 	step_name = qs.name
 	step_type = qs.type
 	position = qs.editor_coordinates
+	for g in qs.get_children():
+		add_goal(g)
 
 
 func _update_is_exit(val:bool):

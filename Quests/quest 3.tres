@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://d15236re5w877"]
+
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_node.gd" id="1_kyr8e"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_step.gd" id="2_77lvq"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest_goal.gd" id="3_8apd5"]
+[ext_resource type="Script" path="res://addons/journalgd/QuestNode/quest.gd" id="4_51qbd"]
+
+[sub_resource type="PackedScene" id="PackedScene_87hu4"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("quest 3", "script", "Node", "s1", "next_steps", "goal_order", "editor_coordinates", "g1", "s2", "g2a", "g2b", "s3", "g3", "s4", "g4"),
+"node_count": 10,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 2, 3, -1, 4, 1, 1, 4, 2, 5, 3, 6, 4, 0, 1, 0, 2, 7, -1, 1, 1, 5, 0, 0, 0, 2, 8, -1, 4, 1, 1, 4, 2, 5, 6, 6, 7, 0, 3, 0, 2, 9, -1, 1, 1, 5, 0, 3, 0, 2, 10, -1, 1, 1, 5, 0, 0, 0, 2, 11, -1, 4, 1, 1, 4, 2, 5, 3, 6, 8, 0, 6, 0, 2, 12, -1, 1, 1, 5, 0, 0, 0, 2, 13, -1, 4, 1, 1, 4, 2, 5, 3, 6, 9, 0, 8, 0, 2, 14, -1, 1, 1, 5, 0),
+"variants": [ExtResource("1_kyr8e"), ExtResource("2_77lvq"), [&"@step@32856", &"@step@32870", &"@step@32879"], [&"Goal"], Vector2(15.8291, 426.374), ExtResource("3_8apd5"), [&"Goal", &"@Goal@32863"], Vector2(432.757, 438.95), Vector2(877.738, 148.745), Vector2(877.738, 496.991)],
+"version": 3
+}
+
+[resource]
+script = ExtResource("4_51qbd")
+quest_id = "quest 3"
+quest_scene = SubResource("PackedScene_87hu4")
