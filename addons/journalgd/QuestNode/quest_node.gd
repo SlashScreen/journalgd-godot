@@ -50,4 +50,3 @@ func is_step_complete(id:String):
 	if not st:
 		return false
 	return st.evaluate(false)
-	

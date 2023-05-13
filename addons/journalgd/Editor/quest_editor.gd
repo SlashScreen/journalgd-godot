@@ -56,39 +56,19 @@ func save() -> void:
 		print("Write a quest name to save.")
 		return
 	
-	print("Start save")
-	var q_root:QuestNode = QuestNode.new()
-	q_root.name = q_name_input.text
-	
-	var owned_nodes = []
+	var quest = SavedQuest.new()
+	quest.quest_id = q_name_input.text
 	# Get steps
 	for s in get_children():
-		var q_step = QuestStep.new(s)
-		q_step.goal_order = s.mapped_goals
-		q_root.add_child(q_step)
-		
-		var cns = get_connection_list().filter(func(x): return x["from"])
-		cns.sort_custom(func(a,b): return a["from_port"] < b["from_port"])
-		print("Connections found:")
-		print(cns)
-		q_step.next_steps = cns.map(func(x): return x["to"])
-		
-		owned_nodes.append(q_step)
-		for g in q_step.get_children():
-			owned_nodes.append(g)
+		quest.add_step(SavedStep.new(s))
 	
-	for n in owned_nodes:
-		n.owner = q_root
+	print(quest.steps)
+	for conn in get_connection_list():
+		print(conn)
+		quest.steps[conn["from"]].add_named_connection(conn["from_port"], conn["to"])
 	
-	print("Packed quest %s with %s children" % [q_root.name, q_root.get_child_count()])
 	# Pack and save
-	var result = Quest.new()
-	var scene = PackedScene.new()
-	q_root.print_tree_pretty()
-	scene.pack(q_root)
-	result.quest_id = q_root.name
-	result.quest_scene = scene
-	ResourceSaver.save(result, (ProjectSettings.get_setting("journalgd/quests_directory") + "/%s.tres" % q_root.name))
+	ResourceSaver.save(quest, (ProjectSettings.get_setting("journalgd/quests_directory") + "/%s.tres" % quest.quest_id))
 
 
 func open(q:Quest) -> void:

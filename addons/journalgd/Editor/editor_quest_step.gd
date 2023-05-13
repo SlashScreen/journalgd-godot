@@ -97,4 +97,8 @@ func add_goal(g:QuestGoal) -> EditorQuestGoal:
 
 func _ready() -> void:
 	$StepType.item_selected.connect(func(x:int): _set_is_goal(x == 2))
-	$StepName.text_submitted.connect(func(x:String): name = x)
+	$StepName.text_submitted.connect(func(x:String):
+		print(x) 
+		name = x
+		print(name)
+		)

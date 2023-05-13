@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="SavedQuest" load_steps=8 format=3 uid="uid://fnicqf8101ld"]
+
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_quest.gd" id="1_wpdsx"]
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_goal.gd" id="2_ralt7"]
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_step.gd" id="3_vnd55"]
+
+[sub_resource type="Resource" id="Resource_eu4k0"]
+script = ExtResource("2_ralt7")
+goal_key = &"sdg"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+
+[sub_resource type="Resource" id="Resource_14vg2"]
+script = ExtResource("3_vnd55")
+step_name = &"s1"
+step_type = 0
+connections = {}
+goals = Array[ExtResource("2_ralt7")]([SubResource("Resource_eu4k0")])
+
+[sub_resource type="Resource" id="Resource_d1jma"]
+script = ExtResource("2_ralt7")
+goal_key = &"jhjj"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+
+[sub_resource type="Resource" id="Resource_u3mb0"]
+script = ExtResource("3_vnd55")
+step_name = &"s2"
+step_type = 0
+connections = {}
+goals = Array[ExtResource("2_ralt7")]([SubResource("Resource_d1jma")])
+
+[resource]
+script = ExtResource("1_wpdsx")
+quest_id = &"ggg"
+steps = {
+"s1": SubResource("Resource_14vg2"),
+"s2": SubResource("Resource_u3mb0")
+}
