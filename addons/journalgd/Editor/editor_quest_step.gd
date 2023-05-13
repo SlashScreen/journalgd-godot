@@ -44,12 +44,12 @@ var mapped_goals:Array:
 		return get_goals().map(func(x:EditorQuestGoal): return x.name)
 
 
-func setup(qs:QuestStep) -> void:
+func setup(qs:SavedStep) -> void:
 	is_exit = qs.is_final_step
-	step_name = qs.name
-	step_type = qs.type
+	step_name = qs.step_name
+	step_type = qs.step_type
 	position = qs.editor_coordinates
-	for g in qs.get_children():
+	for g in qs.goals:
 		add_goal(g)
 
 
@@ -87,7 +87,7 @@ func _on_add_goal() -> EditorQuestGoal:
 	return n
 
 
-func add_goal(g:QuestGoal) -> EditorQuestGoal:
+func add_goal(g:SavedGoal) -> EditorQuestGoal:
 	var n = GOAL_PREFAB.instantiate()
 	n.setup(g)
 	$Scroll/GoalsContainer.add_child(n)

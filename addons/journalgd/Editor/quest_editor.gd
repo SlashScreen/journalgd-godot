@@ -44,7 +44,7 @@ func delete_node(n:String):
 	get_node(n).queue_free()
 
 
-func find_step(sname:StringName) -> EditorQuestGoal:
+func find_step(sname:StringName) -> EditorQuestStep:
 	for c in get_children():
 		if c.name == sname:
 			return c
@@ -71,27 +71,29 @@ func save() -> void:
 	ResourceSaver.save(quest, (ProjectSettings.get_setting("journalgd/quests_directory") + "/%s.tres" % quest.quest_id))
 
 
-func open(q:Quest) -> void:
+func open(q:SavedQuest) -> void:
 	# Get rid of all children
 	for s in get_children():
 		delete_node(s.name)
 	# Create steps
 	q_name_input.text = q.quest_id # set quest ID
-	var quest_scene = q.quest_scene.instantiate() # unpack scene to analyze
 	var to_connect:Array[Dictionary] = []
-	quest_scene.print_tree_pretty()
-	# Iterate through steps, create new
-	for step in quest_scene.get_children():
-		var e_q = STEP_PREFAB.instantiate()
-		e_q.setup(step)
-		for i in (step as QuestStep).goal_order.size():
-			to_connect.append({"from": step.name, "to": (step as QuestStep).next_steps[i], "from_port": i})
-		add_child(e_q)
+	
+	for step in q.steps:
+		var e_step = _on_add_new_button_down()
+		e_step.setup(q.steps[step])
+		for c in q.steps[step].connections:
+			to_connect.append({
+				"from" : step,
+				"to" : q.steps[step].connections[c],
+				"from_port" : q.steps[step].port_for_goal_key(c)
+			})
+	print_tree_pretty()
 	# Connect all
 	print("to connect: %s" % to_connect)
-	#for conn in to_connect:
-	#	print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
-	#	make_connection(conn["from"], conn["from_port"], conn["to"], 0)
+	for conn in to_connect:
+		print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
+		make_connection(conn["from"], conn["from_port"], conn["to"], 0)
 
 
 func _on_clear_pressed() -> void:

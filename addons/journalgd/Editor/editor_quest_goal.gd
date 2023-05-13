@@ -39,10 +39,10 @@ func _on_delete_pressed() -> void:
 	queue_free()
 
 
-func setup(eg:QuestGoal) -> void:
-	goal_key = eg.name
+func setup(eg:SavedGoal) -> void:
+	goal_key = eg.goal_key
 	optional = eg.optional
-	base_id = eg.baseID
-	ref_id = eg.refID
+	base_id = eg.base_id
+	ref_id = eg.ref_id
 	amount = eg.amount
 	only_while_active = eg.only_while_active
