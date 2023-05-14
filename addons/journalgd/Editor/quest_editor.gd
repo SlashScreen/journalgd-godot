@@ -75,6 +75,9 @@ func open(q:SavedQuest) -> void:
 	# Get rid of all children
 	for s in get_children():
 		delete_node(s.name)
+	
+	if not q:
+		return
 	# Create steps
 	q_name_input.text = q.quest_id # set quest ID
 	var to_connect:Array[Dictionary] = []

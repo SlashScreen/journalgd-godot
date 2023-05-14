@@ -11,6 +11,7 @@ amount = 1
 ref_id = ""
 base_id = ""
 only_while_active = true
+optional = false
 
 [sub_resource type="Resource" id="Resource_lel3d"]
 script = ExtResource("3_jwnkj")
@@ -20,6 +21,8 @@ connections = {
 "fgdgdf": &"s2"
 }
 goals = Array[ExtResource("2_pj57y")]([SubResource("Resource_r244d")])
+is_final_step = false
+editor_coordinates = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_bs2iv"]
 script = ExtResource("2_pj57y")
@@ -28,6 +31,7 @@ amount = 1
 ref_id = ""
 base_id = ""
 only_while_active = true
+optional = false
 
 [sub_resource type="Resource" id="Resource_m5u6y"]
 script = ExtResource("3_jwnkj")
@@ -35,6 +39,8 @@ step_name = &"s2"
 step_type = 0
 connections = {}
 goals = Array[ExtResource("2_pj57y")]([SubResource("Resource_bs2iv")])
+is_final_step = false
+editor_coordinates = Vector2(0, 0)
 
 [resource]
 script = ExtResource("1_028wc")

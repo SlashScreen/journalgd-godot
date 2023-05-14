@@ -20,7 +20,7 @@ project/assembly_name="QuestEditor"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/journalgd/plugin.cfg")
+enabled=PackedStringArray("res://addons/journalgd/plugin.cfg", "res://addons/gut/plugin.cfg")
 
 [journalgd]
 
