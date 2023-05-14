@@ -29,6 +29,7 @@ func _load_dir(path:String):
 
 
 func add_quest_node(path:String):
+	# TODO: From Savedquest to quest
 	var q = load(path) as Quest
 	add_child(q.instantiate())
 

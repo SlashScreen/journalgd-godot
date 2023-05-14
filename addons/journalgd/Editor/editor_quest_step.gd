@@ -15,7 +15,6 @@ var step_name:String:
 	get: 
 		return ($StepName as LineEdit).text
 	set(val):
-		name = val
 		($StepName as LineEdit).text = val
 var next_connections:Array[String]
 var step_type:QuestStep.StepType:
@@ -30,6 +29,7 @@ var step_type:QuestStep.StepType:
 			_:
 				return QuestStep.StepType.ALL
 	set(val):
+		_set_is_branch(val == QuestStep.StepType.BRANCH)
 		match val:
 			QuestStep.StepType.ALL:
 				$StepType.select(0)
@@ -47,10 +47,10 @@ var mapped_goals:Array:
 func setup(qs:SavedStep) -> void:
 	is_exit = qs.is_final_step
 	step_name = qs.step_name
-	step_type = qs.step_type
 	position = qs.editor_coordinates
 	for g in qs.goals:
 		add_goal(g)
+	step_type = qs.step_type # put this at end because we need to have the goals count
 
 
 func _update_is_exit(val:bool):
@@ -63,15 +63,20 @@ func _on_delete_node_button_up():
 	get_parent().delete_node(name)
 
 
-func _set_is_goal(state:bool) -> void:
+## Handles dealing with multiple output points with branches.
+func _set_is_branch(state:bool) -> void:
 	print("set is goal")
+	var conn_count = get_connection_output_count()
 	if state:
 		if is_exit:
 			return
-		for i in get_goals().size():
+		var goal_amount = get_goals().size()
+		for i in conn_count:
+			set_slot_enabled_right(i, false)
+		for i in goal_amount:
 			set_slot_enabled_right(i, true)
 	else:
-		for i in get_connection_output_count():
+		for i in conn_count:
 			set_slot_enabled_right(i, false)
 		set_slot_enabled_right(0, not is_exit)
 
@@ -84,7 +89,12 @@ func _on_add_goal() -> EditorQuestGoal:
 	var n = GOAL_PREFAB.instantiate()
 	$Scroll/GoalsContainer.add_child(n)
 	n.owner = self
+	_set_is_branch(step_type == QuestStep.StepType.BRANCH)
 	return n
+
+
+func _on_delete_goal_pressed() -> void:
+	_set_is_branch(step_type == QuestStep.StepType.BRANCH)
 
 
 func add_goal(g:SavedGoal) -> EditorQuestGoal:
@@ -96,9 +106,4 @@ func add_goal(g:SavedGoal) -> EditorQuestGoal:
 
 
 func _ready() -> void:
-	$StepType.item_selected.connect(func(x:int): _set_is_goal(x == 2))
-	$StepName.text_submitted.connect(func(x:String):
-		print(x) 
-		name = x
-		print(name)
-		)
+	$StepType.item_selected.connect(func(x:int): _set_is_branch(x == 2))

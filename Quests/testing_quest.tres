@@ -1,0 +1,122 @@
+[gd_resource type="Resource" script_class="SavedQuest" load_steps=15 format=3 uid="uid://b03iug4egqihh"]
+
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_quest.gd" id="1_pw0rg"]
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_goal.gd" id="2_3578x"]
+[ext_resource type="Script" path="res://addons/journalgd/Saved/saved_step.gd" id="3_mydwi"]
+
+[sub_resource type="Resource" id="Resource_wfxno"]
+script = ExtResource("2_3578x")
+goal_key = &"s1g1"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_badns"]
+script = ExtResource("3_mydwi")
+step_name = &"s1"
+step_type = 0
+connections = {
+"s1g1": &"s2"
+}
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_wfxno")])
+is_final_step = false
+editor_coordinates = Vector2(102.182, 414.909)
+
+[sub_resource type="Resource" id="Resource_f4w1l"]
+script = ExtResource("2_3578x")
+goal_key = &"s2g1"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_nws6w"]
+script = ExtResource("2_3578x")
+goal_key = &"s2g2"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_8v2f3"]
+script = ExtResource("3_mydwi")
+step_name = &"s2"
+step_type = 2
+connections = {
+"s2g1": &"s3",
+"s2g2": &"s4"
+}
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_f4w1l"), SubResource("Resource_nws6w")])
+is_final_step = false
+editor_coordinates = Vector2(522.182, 414.909)
+
+[sub_resource type="Resource" id="Resource_gupiq"]
+script = ExtResource("2_3578x")
+goal_key = &"s3g1"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_coyan"]
+script = ExtResource("3_mydwi")
+step_name = &"s3"
+step_type = 0
+connections = {}
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_gupiq")])
+is_final_step = true
+editor_coordinates = Vector2(982.182, 74.9091)
+
+[sub_resource type="Resource" id="Resource_yyhen"]
+script = ExtResource("2_3578x")
+goal_key = &"s4g1"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_m2rdm"]
+script = ExtResource("3_mydwi")
+step_name = &"s4"
+step_type = 0
+connections = {
+"s4g1": &"s5"
+}
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_yyhen")])
+is_final_step = false
+editor_coordinates = Vector2(982.182, 474.909)
+
+[sub_resource type="Resource" id="Resource_y7jsh"]
+script = ExtResource("2_3578x")
+goal_key = &"s5g1"
+amount = 1
+ref_id = ""
+base_id = ""
+only_while_active = true
+optional = false
+
+[sub_resource type="Resource" id="Resource_lcpoe"]
+script = ExtResource("3_mydwi")
+step_name = &"s5"
+step_type = 0
+connections = {}
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_y7jsh")])
+is_final_step = true
+editor_coordinates = Vector2(1482.18, 474.909)
+
+[resource]
+script = ExtResource("1_pw0rg")
+quest_id = &"testing_quest"
+steps = {
+"s1": SubResource("Resource_badns"),
+"s2": SubResource("Resource_8v2f3"),
+"s3": SubResource("Resource_coyan"),
+"s4": SubResource("Resource_m2rdm"),
+"s5": SubResource("Resource_lcpoe")
+}

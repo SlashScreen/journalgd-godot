@@ -37,6 +37,7 @@ var only_while_active:bool:
 
 func _on_delete_pressed() -> void:
 	queue_free()
+	$"../../../"._on_delete_goal_pressed()
 
 
 func setup(eg:SavedGoal) -> void:

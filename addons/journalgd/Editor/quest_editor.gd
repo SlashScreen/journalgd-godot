@@ -65,7 +65,7 @@ func save() -> void:
 	print(quest.steps)
 	for conn in get_connection_list():
 		print(conn)
-		quest.steps[conn["from"]].add_named_connection(conn["from_port"], conn["to"])
+		quest.steps[_get_step_name_for_node(conn["from"])].add_named_connection(conn["from_port"], _get_step_name_for_node(conn["to"]))
 	
 	# Pack and save
 	ResourceSaver.save(quest, (ProjectSettings.get_setting("journalgd/quests_directory") + "/%s.tres" % quest.quest_id))
@@ -73,8 +73,7 @@ func save() -> void:
 
 func open(q:SavedQuest) -> void:
 	# Get rid of all children
-	for s in get_children():
-		delete_node(s.name)
+	clear()
 	
 	if not q:
 		return
@@ -91,15 +90,28 @@ func open(q:SavedQuest) -> void:
 				"to" : q.steps[step].connections[c],
 				"from_port" : q.steps[step].port_for_goal_key(c)
 			})
-	print_tree_pretty()
 	# Connect all
-	print("to connect: %s" % to_connect)
 	for conn in to_connect:
+		# TODO: save and load names of steps instead of node names, it's causing issues with connections
 		print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
-		make_connection(conn["from"], conn["from_port"], conn["to"], 0)
+		make_connection(_get_node_for_step_name(conn["from"]), conn["from_port"], _get_node_for_step_name(conn["to"]), 0)
+
+
+func _get_step_name_for_node(n:String) -> StringName:
+	return get_node(n).step_name
+
+
+func _get_node_for_step_name(n:StringName) -> StringName:
+	return get_children().filter(func(x:EditorQuestStep): return x.step_name == n).front().name
 
 
 func _on_clear_pressed() -> void:
 	q_name_input.text = ""
+	clear()
+
+
+func clear():
 	for s in get_children():
 		delete_node(s.name)
+	for node in get_connection_list():
+		disconnect_node(node.from, node.from_port, node.to, node.to_port)
