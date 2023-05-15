@@ -10,7 +10,7 @@ var next_steps:Array = []
 var goal_order:Array = []
 var next_step:QuestStep:
 	get:
-		if type == StepType.ALL:
+		if not type == StepType.BRANCH:
 			return next_steps[0]
 		for g in get_children().map(func(x): x as QuestGoal):
 			if(g.evaluate(false)):
@@ -24,6 +24,7 @@ func _init(eqs:SavedStep = null) -> void:
 	type = eqs.step_type
 	is_final_step = eqs.is_final_step
 	name = eqs.step_name
+	# TODO: set up connections
 	for g in eqs.goals:
 		add_child(QuestGoal.new(g))
 
@@ -32,10 +33,10 @@ func evaluate(is_active_step:bool) -> bool:
 	if is_already_complete:
 		return true
 	var results:Array[bool] = []
-	for g in get_children().map(func(x): x as QuestGoal):
-		results.append(g.evaluate() || g.optional) # if evaluate or optional
+	for g in get_children():
+		results.append(g.evaluate(is_active_step) || g.optional) # if evaluate or optional
 	if type == StepType.ALL:
-		var check = results.all(func(x): x)
+		var check = results.all(func(x): return x)
 		if check:
 			is_already_complete = true
 		return check
@@ -47,9 +48,9 @@ func evaluate(is_active_step:bool) -> bool:
 
 
 ## Register a goal event.
-func register_event(key:String):
-	for g in get_children().map(func(x): x as QuestGoal):
-		g.attempt_register(key)
+func register_event(key:String, args:Dictionary):
+	for g in get_children():
+		g.attempt_register(key, args)
 
 
 enum StepType {

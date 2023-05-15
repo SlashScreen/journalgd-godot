@@ -43,6 +43,7 @@ func add_node_from_saved(q:SavedQuest) -> void:
 		var s_node = QuestStep.new(q.steps[s])
 		q_node.add_child(s_node)
 	
+	q_node.reset_active_step()
 	add_child(q_node)
 
 
@@ -76,6 +77,7 @@ func register_quest_event(path:String):
 	else: # if just the key
 		for q in get_children().map(func(x): return x as QuestNode):
 			q.register_step_event(path)
+	_update_all_quests()
 
 
 func is_step_complete(path:String) -> bool:

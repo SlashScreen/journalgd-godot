@@ -1,8 +1,6 @@
 extends GutTest
 
 
-const EXAMPLE_QUEST = preload("res://Quests/54745.tres")
-
 var quest_engine:QuestEngine
 
 func before_each() -> void:
@@ -23,5 +21,7 @@ func test_quest_load() -> void:
 			assert_eq(q.get_child(i-1).get_child(g-1).name, &"s%sg%s" % [i,g])
 
 
-func test_quest_events() -> void:
-	pass_test("Not complete")
+func test_quest_event_path() -> void:
+	assert_eq(quest_engine.get_child(0)._active_step.name, &"s1")
+	quest_engine.register_quest_event("testing_quest/s1g1")
+	assert_eq(quest_engine.get_child(0)._active_step.name, &"s2")
