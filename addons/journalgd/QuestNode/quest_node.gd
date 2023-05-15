@@ -9,7 +9,11 @@ extends Node
 var _q_data:Quest
 var qID:String
 var complete:bool = false
-@onready var _active_step:QuestStep = get_child(0) # TODO: entry point
+var _active_step:QuestStep:
+	get:
+		return _active_step
+	set(val):
+		_active_step = val
 
 
 signal quest_complete(qID:String)
@@ -28,10 +32,6 @@ func evaluate() -> bool:
 	return results.all(func(x): x)
 
 
-func reset_active_step() -> void:
-	_active_step = get_child(0)
-
-
 func update():
 	if complete:
 		return
@@ -46,7 +46,6 @@ func update():
 func register_step_event(key:String, args:Dictionary = {}):
 	for g in get_children():
 		g.register_event(key, args)
-	update()
 
 
 func is_step_complete(id:String):

@@ -6,15 +6,14 @@ extends Node
 var type:StepType = StepType.ALL
 var is_final_step:bool = false
 var is_already_complete:bool
-var next_steps:Array = []
-var goal_order:Array = []
+var next_steps:Dictionary = {}
 var next_step:QuestStep:
 	get:
 		if not type == StepType.BRANCH:
-			return next_steps[0]
-		for g in get_children().map(func(x): x as QuestGoal):
+			return get_parent().get_node_or_null(next_steps.values()[0] as String) 
+		for g in get_children():
 			if(g.evaluate(false)):
-				return next_steps[goal_order.find(g.key)]
+				return get_parent().get_node_or_null(next_steps[g.key] as String)
 		return null
 
 
@@ -24,7 +23,7 @@ func _init(eqs:SavedStep = null) -> void:
 	type = eqs.step_type
 	is_final_step = eqs.is_final_step
 	name = eqs.step_name
-	# TODO: set up connections
+	next_steps = eqs.connections
 	for g in eqs.goals:
 		add_child(QuestGoal.new(g))
 

@@ -5,6 +5,7 @@ var quest_engine:QuestEngine
 
 func before_each() -> void:
 	quest_engine = autofree(QuestEngine.new())
+	add_child(quest_engine)
 	quest_engine.add_quest_from_path("res://Quests/testing_quest.tres")
 
 

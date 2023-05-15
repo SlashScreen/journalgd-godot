@@ -43,8 +43,12 @@ func add_node_from_saved(q:SavedQuest) -> void:
 		var s_node = QuestStep.new(q.steps[s])
 		q_node.add_child(s_node)
 	
-	q_node.reset_active_step()
 	add_child(q_node)
+	if q.entry_point == &"":
+		q_node._active_step = q_node.get_child(0)
+		print(q_node._active_step)
+	else:
+		q_node = q.entry_point
 
 
 ## Checks whether a quest is currently active.
@@ -97,5 +101,5 @@ func is_step_in_progress(path:String) -> bool:
 
 
 func _update_all_quests():
-	for q in get_children().map(func(x): return x as QuestNode):
+	for q in get_children():
 		q.update()
