@@ -111,7 +111,7 @@ func _on_clear_pressed() -> void:
 
 
 func clear():
+	clear_connections()
 	for s in get_children():
 		delete_node(s.name)
-	for node in get_connection_list():
-		disconnect_node(node.from, node.from_port, node.to, node.to_port)
+	queue_redraw()

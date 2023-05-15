@@ -6,9 +6,8 @@ extends Node
 var type:StepType = StepType.ALL
 var is_final_step:bool = false
 var is_already_complete:bool
-@export var next_steps:Array = []
-@export var goal_order:Array = []
-@export var editor_coordinates:Vector2
+var next_steps:Array = []
+var goal_order:Array = []
 var next_step:QuestStep:
 	get:
 		if type == StepType.ALL:
@@ -19,14 +18,13 @@ var next_step:QuestStep:
 		return null
 
 
-func _init(eqs:EditorQuestStep = null) -> void:
+func _init(eqs:SavedStep = null) -> void:
 	if not eqs:
 		return
 	type = eqs.step_type
-	is_final_step = eqs.is_exit
+	is_final_step = eqs.is_final_step
 	name = eqs.step_name
-	editor_coordinates = eqs.position
-	for g in eqs.get_goals():
+	for g in eqs.goals:
 		add_child(QuestGoal.new(g))
 
 

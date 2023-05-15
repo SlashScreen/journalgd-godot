@@ -16,7 +16,7 @@ var already_satisfied:bool = false
 # TODO: Allow undoing events
 
 
-func _init(eqg:EditorQuestGoal = null) -> void:
+func _init(eqg:SavedGoal = null) -> void:
 	if not eqg:
 		return
 	optional = eqg.optional

@@ -24,14 +24,26 @@ func _load_dir(path:String):
 		if dir.current_is_dir():
 			_load_dir(file_name)
 		else:
-			add_quest_node("%s/%s" % [path, file_name])
+			add_quest_from_path("%s/%s" % [path, file_name])
 		file_name = dir.get_next()
 
 
-func add_quest_node(path:String):
-	# TODO: From Savedquest to quest
-	var q = load(path) as Quest
-	add_child(q.instantiate())
+func add_quest_from_path(path:String):
+	var q = load(path) as SavedQuest
+	add_node_from_saved(q)
+
+
+func add_node_from_saved(q:SavedQuest) -> void:
+	var q_node = QuestNode.new()
+	q_node.qID = q.quest_id
+	q_node.name = q.quest_id
+	
+	# Create steps
+	for s in q.steps:
+		var s_node = QuestStep.new(q.steps[s])
+		q_node.add_child(s_node)
+	
+	add_child(q_node)
 
 
 ## Checks whether a quest is currently active.
