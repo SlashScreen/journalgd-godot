@@ -10,6 +10,7 @@ extends Resource
 @export var goals:Array[SavedGoal] = []
 @export var is_final_step:bool
 @export var editor_coordinates:Vector2
+@export var is_entry_step:bool
 
 
 func _init(eqs:EditorQuestStep = null) -> void:
@@ -19,6 +20,7 @@ func _init(eqs:EditorQuestStep = null) -> void:
 	step_type = eqs.step_type
 	is_final_step = eqs.is_exit
 	editor_coordinates = eqs.position
+	is_entry_step = eqs.is_entry_step
 	for g in eqs.get_goals():
 		add_goal(SavedGoal.new(g))
 

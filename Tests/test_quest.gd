@@ -39,5 +39,5 @@ func test_quest_branch() -> void:
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s1")
 	quest_engine.register_quest_event("testing_quest/s1g1")
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s2")
-	quest_engine.register_quest_event("testing_quest/s2g2") # deliberately go to the other branch to test if ordering is a problem
+	quest_engine.register_quest_event("testing_quest/s2g2") # deliberately go to the other branch to avoid false positives due to ordering
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s4")

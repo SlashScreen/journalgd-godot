@@ -9,11 +9,7 @@ extends Node
 var _q_data:Quest
 var qID:String
 var complete:bool = false
-var _active_step:QuestStep:
-	get:
-		return _active_step
-	set(val):
-		_active_step = val
+var _active_step:QuestStep
 
 
 signal quest_complete(qID:String)

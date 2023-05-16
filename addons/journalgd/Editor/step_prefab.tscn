@@ -79,6 +79,15 @@ slot/7/right_type = 0
 slot/7/right_color = Color(1, 1, 1, 1)
 slot/7/right_icon = null
 slot/7/draw_stylebox = true
+slot/8/left_enabled = false
+slot/8/left_type = 0
+slot/8/left_color = Color(1, 1, 1, 1)
+slot/8/left_icon = null
+slot/8/right_enabled = false
+slot/8/right_type = 0
+slot/8/right_color = Color(1, 1, 1, 1)
+slot/8/right_icon = null
+slot/8/draw_stylebox = true
 script = ExtResource("1_kwd5h")
 
 [node name="DeleteNode" type="Button" parent="."]
@@ -104,9 +113,13 @@ popup/item_1/id = 1
 popup/item_2/text = "Branch"
 popup/item_2/id = 2
 
+[node name="IsEntryButton" type="CheckButton" parent="."]
+layout_mode = 2
+text = "Is starting step"
+
 [node name="IsExitButton" type="CheckButton" parent="."]
 layout_mode = 2
-text = "Exit node"
+text = "Is last step"
 
 [node name="AddGoalButton" type="Button" parent="."]
 layout_mode = 2

@@ -42,12 +42,19 @@ var step_type:QuestStep.StepType:
 var mapped_goals:Array:
 	get:
 		return get_goals().map(func(x:EditorQuestGoal): return x.name)
+var is_entry_step:bool:
+	get:
+		return $IsEntryButton.button_pressed
+	set(val):
+		$IsEntryButton.button_pressed = val
+		set_slot_enabled_left(4, not val)
 
 
 func setup(qs:SavedStep) -> void:
 	is_exit = qs.is_final_step
 	step_name = qs.step_name
 	position = qs.editor_coordinates
+	is_entry_step = qs.is_entry_step
 	for g in qs.goals:
 		add_goal(g)
 	step_type = qs.step_type # put this at end because we need to have the goals count
@@ -107,3 +114,4 @@ func add_goal(g:SavedGoal) -> EditorQuestGoal:
 
 func _ready() -> void:
 	$StepType.item_selected.connect(func(x:int): _set_is_branch(x == 2))
+	$IsEntryButton.toggled.connect(func(state:bool): set_slot_enabled_left(4, not state))

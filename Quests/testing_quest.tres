@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://addons/journalgd/Saved/saved_goal.gd" id="2_3578x"]
 [ext_resource type="Script" path="res://addons/journalgd/Saved/saved_step.gd" id="3_mydwi"]
 
-[sub_resource type="Resource" id="Resource_wfxno"]
+[sub_resource type="Resource" id="Resource_b6vb0"]
 script = ExtResource("2_3578x")
 goal_key = &"s1g1"
 amount = 1
@@ -13,18 +13,19 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_badns"]
+[sub_resource type="Resource" id="Resource_pala1"]
 script = ExtResource("3_mydwi")
 step_name = &"s1"
 step_type = 0
 connections = {
 "s1g1": &"s2"
 }
-goals = Array[ExtResource("2_3578x")]([SubResource("Resource_wfxno")])
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_b6vb0")])
 is_final_step = false
-editor_coordinates = Vector2(102.182, 414.909)
+editor_coordinates = Vector2(140, 360)
+is_entry_step = true
 
-[sub_resource type="Resource" id="Resource_f4w1l"]
+[sub_resource type="Resource" id="Resource_ux78e"]
 script = ExtResource("2_3578x")
 goal_key = &"s2g1"
 amount = 1
@@ -33,7 +34,7 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_nws6w"]
+[sub_resource type="Resource" id="Resource_woidx"]
 script = ExtResource("2_3578x")
 goal_key = &"s2g2"
 amount = 1
@@ -42,7 +43,7 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_8v2f3"]
+[sub_resource type="Resource" id="Resource_cgogb"]
 script = ExtResource("3_mydwi")
 step_name = &"s2"
 step_type = 2
@@ -50,11 +51,12 @@ connections = {
 "s2g1": &"s3",
 "s2g2": &"s4"
 }
-goals = Array[ExtResource("2_3578x")]([SubResource("Resource_f4w1l"), SubResource("Resource_nws6w")])
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_ux78e"), SubResource("Resource_woidx")])
 is_final_step = false
-editor_coordinates = Vector2(522.182, 414.909)
+editor_coordinates = Vector2(500, 240)
+is_entry_step = false
 
-[sub_resource type="Resource" id="Resource_gupiq"]
+[sub_resource type="Resource" id="Resource_7s8md"]
 script = ExtResource("2_3578x")
 goal_key = &"s3g1"
 amount = 1
@@ -63,16 +65,17 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_coyan"]
+[sub_resource type="Resource" id="Resource_fnm35"]
 script = ExtResource("3_mydwi")
 step_name = &"s3"
 step_type = 0
 connections = {}
-goals = Array[ExtResource("2_3578x")]([SubResource("Resource_gupiq")])
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_7s8md")])
 is_final_step = true
-editor_coordinates = Vector2(982.182, 74.9091)
+editor_coordinates = Vector2(880, 580)
+is_entry_step = false
 
-[sub_resource type="Resource" id="Resource_yyhen"]
+[sub_resource type="Resource" id="Resource_4du7l"]
 script = ExtResource("2_3578x")
 goal_key = &"s4g1"
 amount = 1
@@ -81,18 +84,19 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_m2rdm"]
+[sub_resource type="Resource" id="Resource_2n4x2"]
 script = ExtResource("3_mydwi")
 step_name = &"s4"
 step_type = 0
 connections = {
 "s4g1": &"s5"
 }
-goals = Array[ExtResource("2_3578x")]([SubResource("Resource_yyhen")])
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_4du7l")])
 is_final_step = false
-editor_coordinates = Vector2(982.182, 474.909)
+editor_coordinates = Vector2(880, 160)
+is_entry_step = false
 
-[sub_resource type="Resource" id="Resource_y7jsh"]
+[sub_resource type="Resource" id="Resource_nt2fs"]
 script = ExtResource("2_3578x")
 goal_key = &"s5g1"
 amount = 1
@@ -101,23 +105,24 @@ base_id = ""
 only_while_active = true
 optional = false
 
-[sub_resource type="Resource" id="Resource_lcpoe"]
+[sub_resource type="Resource" id="Resource_ii55i"]
 script = ExtResource("3_mydwi")
 step_name = &"s5"
 step_type = 0
 connections = {}
-goals = Array[ExtResource("2_3578x")]([SubResource("Resource_y7jsh")])
+goals = Array[ExtResource("2_3578x")]([SubResource("Resource_nt2fs")])
 is_final_step = true
-editor_coordinates = Vector2(1482.18, 474.909)
+editor_coordinates = Vector2(1240, 40)
+is_entry_step = false
 
 [resource]
 script = ExtResource("1_pw0rg")
 quest_id = &"testing_quest"
 steps = {
-"s1": SubResource("Resource_badns"),
-"s2": SubResource("Resource_8v2f3"),
-"s3": SubResource("Resource_coyan"),
-"s4": SubResource("Resource_m2rdm"),
-"s5": SubResource("Resource_lcpoe")
+"s1": SubResource("Resource_pala1"),
+"s2": SubResource("Resource_cgogb"),
+"s3": SubResource("Resource_fnm35"),
+"s4": SubResource("Resource_2n4x2"),
+"s5": SubResource("Resource_ii55i")
 }
 entry_point = &""
