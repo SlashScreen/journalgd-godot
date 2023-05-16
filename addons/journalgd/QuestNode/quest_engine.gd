@@ -2,13 +2,23 @@ class_name QuestEngine
 extends Node
 ## This keeps track of all of the quests.
 ## Quests will be instantiated as [QuestObject]s underneath this node.
-## Registering a quest event will update the trree downwards. What does this mean? I don't know, I'm tired.
+## Registering a quest event will update the tree downwards. What does this mean? I don't know, I'm tired.
+## When functions ask for a "Quest path", they are referring to a string in the format of [code]quest_name/step_name/goal_name[/code].
 
 
 ## Array of IDs of all the quests that are currently active.
 var active_quests: Array[String]
 ## Array of IDs of all the quests the player has completed.
 var complete_quests:Array[String]
+
+## Emitted when a quest has started.
+signal quest_started(q_id:String)
+## Emitted when a quest is complete.
+signal quest_complete(q_id:String)
+## Emitted when a quest goal has been updated - the amount has been increased, or it is marked as complete.
+signal goal_updated(quest_path:String) # TODO
+## Emitted when a step is updated - when a step is marked as complete.
+signal step_updated(quest_path:String) # TODO
 
 
 ## Loads all quests from the [code]biznasty/quests_directory[/code] project setting, and then instantiates them as child [QuestObject]s.
@@ -28,11 +38,22 @@ func _load_dir(path:String):
 		file_name = dir.get_next()
 
 
+## Load a quest resource at a path, and load it into the system.
 func add_quest_from_path(path:String):
 	var q = load(path) as SavedQuest
 	add_node_from_saved(q)
 
 
+## Mark a quest as started.
+func start_quest(q_id:String) -> bool:
+	if get_node_or_null(q_id):
+		active_quests.append(q_id)
+		quest_started.emit(q_id)
+		return true
+	return false
+
+
+## Add a quest from a [SavedQuest] resource.
 func add_node_from_saved(q:SavedQuest) -> void:
 	var q_node = QuestNode.new()
 	q_node.qID = q.quest_id
@@ -65,8 +86,81 @@ func is_quest_complete(qID:String) -> bool:
 
 ## Checks whether a quest has been started, meaning it is either currently in progress, or already complete.
 ## Inverting this can check if the quest hasn't been started by the player.
-func is_quest_started(qID:String) -> bool:
+func has_quest_been_started(qID:String) -> bool:
 	return is_quest_active(qID) or is_quest_complete(qID)
+
+
+## Gets a quest's node by name.
+func get_quest(q_id:String) -> QuestNode:
+	return get_node_or_null(q_id)
+
+
+## Returns whether the goal is incomplete in an active quest and step - if the player is currently doing it.
+func is_goal_active(path:String) -> bool:
+	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
+	if not is_step_active(chunks[0]):
+		return false
+	var g = get_goal(path)
+	return not g.already_satisfied
+
+
+## Ignoring whether the goal's step and quest are complete, returns whether the goal is complete or not.
+func is_goal_complete(path:String) -> bool:
+	var g = get_goal(path)
+	if not g:
+		return false
+	return g.already_satisfied
+
+
+## Checks whether a goal has been started, meaning it is either currently in progress, or already complete.
+## Inverting this can check if the quest hasn't been started by the player.
+func has_goal_been_started(path:String) -> bool:
+	return is_goal_active(path) or is_goal_complete(path)
+
+
+## Get a goal object at the given path.
+func get_goal(path:String) -> QuestGoal:
+	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
+	var q_step = get_step(chunks[0]) # DRY!
+	if not q_step:
+		return null
+	var q_goal = q_step.get_node_or_null(chunks[1])
+	return q_goal
+
+
+## Determines whether a step is active or not, meaning that it is the current step of an active quest.
+func is_step_active(path:String) -> bool:
+	var chunks = path.split("/")
+	if not is_quest_active(chunks[0]):
+		return false
+	var qnode = get_quest(chunks[0])
+	if not qnode:
+		return false
+	return qnode._active_step.name == chunks[1]
+
+
+## Determines whether a step is complete or not.
+func is_step_complete(path:String) -> bool:
+	var chunks = path.split("/")
+	var qnode = get_quest(chunks[0])
+	if not qnode:
+		return false
+	return qnode.is_step_complete(chunks[1])
+
+
+## Checks whether a step has been started, meaning it is either currently in progress, or already complete.
+## Inverting this can check if the quest hasn't been started by the player.
+func has_step_been_started(path:String) -> bool:
+	return is_quest_active(path) or is_step_complete(path)
+
+
+## Get a step object at a given path.
+func get_step(path:String) -> QuestStep:
+	var chunks = path.split("/")
+	var qnode = get_node_or_null(chunks[0]) as QuestNode
+	if qnode == null:
+		return null
+	return qnode.get_node_or_null(chunks[1]) as QuestStep
 
 
 # TODO: Use propogate_call instead.
@@ -86,22 +180,9 @@ func register_quest_event(path:String):
 	_update_all_quests()
 
 
-func is_step_complete(path:String) -> bool:
-	var chunks = path.split("/")
-	var qnode = get_node_or_null(chunks[0]) as QuestNode
-	if qnode == null:
-		return false
-	return qnode.is_step_complete(chunks[1])
-
-
-func is_step_in_progress(path:String) -> bool:
-	var chunks = path.split("/")
-	var qnode = get_node_or_null(chunks[0]) as QuestNode
-	if qnode == null:
-		return false
-	return qnode._active_step.name == chunks[1]
-
-
 func _update_all_quests():
 	for q in get_children():
 		q.update()
+		if q.complete and not complete_quests.has(q.name):
+			complete_quests.append(q.name)
+			quest_complete.emit(q.name)

@@ -41,3 +41,20 @@ func test_quest_branch() -> void:
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s2")
 	quest_engine.register_quest_event("testing_quest/s2g2") # deliberately go to the other branch to avoid false positives due to ordering
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s4")
+
+
+func test_quest_all() -> void:
+	pending()
+
+
+func test_quest_any() -> void:
+	pending()
+
+
+func test_quest_active() -> void:
+	quest_engine.start_quest("testing_quest")
+	assert_true(quest_engine.is_quest_active("testing_quest"))
+
+
+func test_quest_completion() -> void:
+	pending()
