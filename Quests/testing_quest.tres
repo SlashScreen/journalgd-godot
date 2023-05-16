@@ -120,3 +120,4 @@ steps = {
 "s4": SubResource("Resource_m2rdm"),
 "s5": SubResource("Resource_lcpoe")
 }
+entry_point = &""

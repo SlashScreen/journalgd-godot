@@ -13,7 +13,7 @@ var next_step:QuestStep:
 			return get_parent().get_node_or_null(next_steps.values()[0] as String) 
 		for g in get_children():
 			if(g.evaluate(false)):
-				return get_parent().get_node_or_null(next_steps[g.key] as String)
+				return get_parent().get_node_or_null(next_steps[g.name] as String)
 		return null
 
 
@@ -40,7 +40,7 @@ func evaluate(is_active_step:bool) -> bool:
 			is_already_complete = true
 		return check
 	else:
-		var check = results.any(func(x): x)
+		var check = results.any(func(x): return x)
 		if check:
 			is_already_complete = true
 		return check
