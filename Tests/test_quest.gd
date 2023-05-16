@@ -64,5 +64,5 @@ func test_quest_completion() -> void:
 
 func test_step_active() -> void:
 	quest_engine.register_quest_event("testing_quest/s1g1")
-	assert_true(quest_engine.is_step_active("testing_quest/s2"), "Step s2 should be active.")
-	assert_true(quest_engine.is_step_complete("testing_quest/s1"), "Step s1 should be complete.")
+	assert_true(quest_engine.is_member_active("testing_quest/s2"), "Step s2 should be active.")
+	assert_true(quest_engine.is_member_complete("testing_quest/s1"), "Step s1 should be complete.")
