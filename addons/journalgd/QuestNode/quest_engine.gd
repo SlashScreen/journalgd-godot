@@ -76,36 +76,35 @@ func add_node_from_saved(q:SavedQuest) -> void:
 
 func is_member_active(q_path) -> bool:
 	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
-	# step 1: quest
-	if path_info["quest"]:
-		if not active_quests.has(path_info["quest"]):
+	
+	match path_info:
+		{"quest": var quest}:
+			return active_quests.has(quest)
+		{"quest": var quest, "step": var step}:
+			var q:QuestNode = get_member(quest)
+			return q._active_step.name == step
+		{"goal", ..}:
+			var g:QuestGoal = get_member(path_info)
+			return g.already_satisfied
+		_:
 			return false
-	if path_info["step"]:
-		# by the time we get here, we know the step is active.
-		var quest:QuestNode = get_member(path_info["quest"])
-		if not quest._active_step.name == path_info["step"]: # if step is not the active step, false
-			return false
-	if path_info["goal"]:
-		var goal:QuestGoal = get_member(path_info)
-		return not goal.already_satisfied # only active if not yet done
-	return false
 
 
 func is_member_complete(q_path) -> bool:
 	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
-	# step 1: quest
-	if path_info["quest"]:
-		if not complete_quests.has(path_info["quest"]):
+	
+	match path_info:
+		{"quest": var quest}:
+			return complete_quests.has(quest)
+		{"quest": var quest, "step": var step}:
+			var p = "%s/%s" % [quest, step]
+			var s:QuestStep = get_member(p)
+			return s.is_already_complete
+		{"goal", ..}:
+			var g:QuestGoal = get_member(path_info)
+			return g.already_satisfied
+		_:
 			return false
-	if path_info["step"]:
-		# by the time we get here, we know the step is active.
-		var step:QuestStep = get_member(path_info["quest"] + "/" + path_info["step"])
-		if not step.is_already_complete: # if step is not the active step, false
-			return false
-	if path_info["goal"]:
-		var goal:QuestGoal = get_member(path_info)
-		return goal.already_satisfied
-	return false
 
 
 func has_member_been_started(q_path) -> bool:
@@ -114,36 +113,8 @@ func has_member_been_started(q_path) -> bool:
 
 
 func get_member(q_path) -> Variant:
-	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
-	
-	var q_node:QuestNode
-	var q_step:QuestStep
-	var q_goal:QuestGoal
-	
-	# step 1: quest
-	if path_info["quest"]:
-		# try to get quest, if fail return null
-		q_node = get_node_or_null(path_info["quest"])
-		if not q_node:
-			return null
-	else:
-		return null
-	# step 2: step
-	if path_info["step"]:
-		q_step = q_node.get_node_or_null(path_info["step"])
-		if not q_step:
-			return null
-	else:
-		return q_node # return node because we only wanted it
-	# step 3: goal
-	if path_info["step"]:
-		q_goal = q_step.get_node_or_null(path_info["step"])
-		if not q_goal:
-			return null
-	else:
-		return q_step # return step because we only wanted it
-	
-	return q_goal
+	var path_info = q_path if q_path is String else _fuse_path(q_path)
+	return get_node_or_null(path_info)
 
 
 # TODO: Use propogate_call instead.
@@ -174,8 +145,20 @@ func _update_all_quests():
 
 func _parse_quest_path(path:String) -> Dictionary:
 	var chunks = path.split("/")
-	return {
-		"quest" = chunks[0],
-		"step" = chunks[1] if chunks.size() > 1 else null,
-		"goal" = chunks[2] if chunks.size() > 2 else null
-	}
+	var output:Dictionary = {"quest":chunks[0]}
+	if chunks.size() > 1:
+		output["step"] = chunks[1]
+	if chunks.size() > 2:
+		output["goal"] = chunks[2]
+	return output
+
+
+func _fuse_path(path:Dictionary) -> String:
+	var output = ""
+	if path["quest"]:
+		output += path["quest"]
+	if path["step"]:
+		output += "/" + path["step"]
+	if path["goal"]:
+		output += "/" + path["goal"]
+	return output
