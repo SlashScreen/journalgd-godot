@@ -95,39 +95,6 @@ func get_quest(q_id:String) -> QuestNode:
 	return get_node_or_null(q_id)
 
 
-## Returns whether the goal is incomplete in an active quest and step - if the player is currently doing it.
-func is_goal_active(path:String) -> bool:
-	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
-	if not is_step_active(chunks[0]):
-		return false
-	var g = get_goal(path)
-	return not g.already_satisfied
-
-
-## Ignoring whether the goal's step and quest are complete, returns whether the goal is complete or not.
-func is_goal_complete(path:String) -> bool:
-	var g = get_goal(path)
-	if not g:
-		return false
-	return g.already_satisfied
-
-
-## Checks whether a goal has been started, meaning it is either currently in progress, or already complete.
-## Inverting this can check if the quest hasn't been started by the player.
-func has_goal_been_started(path:String) -> bool:
-	return is_goal_active(path) or is_goal_complete(path)
-
-
-## Get a goal object at the given path.
-func get_goal(path:String) -> QuestGoal:
-	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
-	var q_step = get_step(chunks[0]) # DRY!
-	if not q_step:
-		return null
-	var q_goal = q_step.get_node_or_null(chunks[1])
-	return q_goal
-
-
 ## Determines whether a step is active or not, meaning that it is the current step of an active quest.
 func is_step_active(path:String) -> bool:
 	var chunks = path.split("/")
@@ -163,7 +130,41 @@ func get_step(path:String) -> QuestStep:
 	return qnode.get_node_or_null(chunks[1]) as QuestStep
 
 
+## Returns whether the goal is incomplete in an active quest and step - if the player is currently doing it.
+func is_goal_active(path:String) -> bool:
+	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
+	if not is_step_active(chunks[0]):
+		return false
+	var g = get_goal(path)
+	return not g.already_satisfied
+
+
+## Ignoring whether the goal's step and quest are complete, returns whether the goal is complete or not.
+func is_goal_complete(path:String) -> bool:
+	var g = get_goal(path)
+	if not g:
+		return false
+	return g.already_satisfied
+
+
+## Checks whether a goal has been started, meaning it is either currently in progress, or already complete.
+## Inverting this can check if the quest hasn't been started by the player.
+func has_goal_been_started(path:String) -> bool:
+	return is_goal_active(path) or is_goal_complete(path)
+
+
+## Get a goal object at the given path.
+func get_goal(path:String) -> QuestGoal:
+	var chunks = path.rsplit("/", true, 1) # we only want to pop off the last part of the path
+	var q_step = get_step(chunks[0]) # DRY!
+	if not q_step:
+		return null
+	var q_goal = q_step.get_node_or_null(chunks[1])
+	return q_goal
+
+
 # TODO: Use propogate_call instead.
+# TODO: Use consistent quest string format.
 ## Register a quest event. 
 ## You can either pass in a path formatted like [Code]MyQuest/MyEvent[/code] to send an event to a specific quest,
 ## or simply pass in the event key to send an event to all quests.
@@ -186,3 +187,12 @@ func _update_all_quests():
 		if q.complete and not complete_quests.has(q.name):
 			complete_quests.append(q.name)
 			quest_complete.emit(q.name)
+
+
+func _parse_quest_path(path:String) -> Dictionary:
+	var chunks = path.split("/")
+	return {
+		"quest" = chunks[0],
+		"step" = chunks[1] if chunks.size() > 0 else "",
+		"goal" = chunks[2] if chunks.size() > 1 else ""
+	}
