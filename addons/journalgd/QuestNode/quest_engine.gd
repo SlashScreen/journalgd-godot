@@ -74,6 +74,7 @@ func add_node_from_saved(q:SavedQuest) -> void:
 		q_node = q.entry_point
 
 
+## Is a member currently in progress?
 func is_member_active(q_path) -> bool:
 	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
 	
@@ -90,6 +91,7 @@ func is_member_active(q_path) -> bool:
 			return false
 
 
+## Has a member reached their completion state- a quest has reached a step marked as the end, a step has all goals completed, or a goal has been satisfied.
 func is_member_complete(q_path) -> bool:
 	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
 	
@@ -107,31 +109,45 @@ func is_member_complete(q_path) -> bool:
 			return false
 
 
+## Is a member active, or has it been completed. Inverting this can tell if the player hasn't started a quest.
 func has_member_been_started(q_path) -> bool:
 	var path_info = _parse_quest_path(q_path) if q_path is String else q_path
 	return is_member_active(path_info) or is_member_complete(path_info)
 
 
+## Get a [QuestNode], [QuestStep], or [QuestGoal] from the quest path. Returns one of those 3 classes, or null if none found.
 func get_member(q_path) -> Variant:
 	var path_info = q_path if q_path is String else _fuse_path(q_path)
 	return get_node_or_null(path_info)
 
 
-# TODO: Use propogate_call instead.
-# TODO: Use consistent quest string format.
-## Register a quest event. 
-## You can either pass in a path formatted like [Code]MyQuest/MyEvent[/code] to send an event to a specific quest,
-## or simply pass in the event key to send an event to all quests.
-func register_quest_event(path:String):
-	if path.contains("/"): # if the key is a path
-		var chunks = path.split("/")
-		var qnode = get_node_or_null(chunks[0]) as QuestNode
-		if qnode == null:
+## Register a quest event. This function has unique behavior based on the path you give it: [br]
+## [code]goal_key[/code] - Apply the event to all quests loaded in the system, active or not. [br]
+## [code]quest_name/goal_key[/code] - Apply the event to all steps in a quest. [br]
+## [code]quest_name/step_name/goal_key[/code] - Apply the event only to a specific step of a specific quest. [br]
+## [code]args[/code] is an optional dictionary with the shape of
+## [CodeBlock]
+## {
+##  	"ref_id" : String <- Optional, ref id to check against for goal conditions.
+##  	"base_id" : String <- Optional, base id to check against for goal conditions.
+## }
+## [/CodeBlock]
+func register_quest_event(path:String, args:Dictionary = {}):
+	match _parse_quest_path(path):
+		{"quest": var key}:
+			propagate_call("register_step_event", [path, args])
+		{"quest": var quest, "step": var key}:
+			var qnode = get_member({"quest": quest})
+			if not qnode:
+				return
+			qnode.register_step_event(key, args)
+		{"quest": var quest, "step": var step, "goal": var key}:
+			var snode:QuestStep = get_member({"quest": quest, "step": step})
+			if not snode:
+				return
+			snode.register_event(key, args)
+		_:
 			return
-		qnode.register_step_event(chunks[1])
-	else: # if just the key
-		for q in get_children().map(func(x): return x as QuestNode):
-			q.register_step_event(path)
 	_update_all_quests()
 
 
@@ -155,10 +171,10 @@ func _parse_quest_path(path:String) -> Dictionary:
 
 func _fuse_path(path:Dictionary) -> String:
 	var output = ""
-	if path["quest"]:
+	if path.has("quest"):
 		output += path["quest"]
-	if path["step"]:
+	if path.has("step"):
 		output += "/" + path["step"]
-	if path["goal"]:
+	if path.has("goal"):
 		output += "/" + path["goal"]
 	return output

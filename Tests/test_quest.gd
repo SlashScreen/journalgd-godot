@@ -59,7 +59,11 @@ func test_quest_active() -> void:
 
 
 func test_quest_completion() -> void:
-	pending()
+	quest_engine.start_quest("testing_quest")
+	quest_engine.register_quest_event("testing_quest/s1g1")
+	quest_engine.register_quest_event("testing_quest/s2g1")
+	quest_engine.register_quest_event("testing_quest/s3g1")
+	assert_true(quest_engine.is_member_complete("testing_quest"))
 
 
 func test_step_active() -> void:
