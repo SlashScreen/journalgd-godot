@@ -5,17 +5,26 @@ extends GraphNode
 
 
 const GOAL_PREFAB = preload("res://addons/journalgd/Editor/goal_prefab.tscn")
+const STEP_COLORS = {
+	"all" : 0xf2c45a,
+	"any" : 0x5e8c6a,
+	"branch" : 0xbfb35a,
+	"start" : 0xb1f33d,
+	"end" : 0xbb3f3b
+}
 
 var is_exit:bool:
 	get:
 		return $IsExitButton.button_pressed
 	set(val):
 		$IsExitButton.button_pressed = val
+		_set_title_color()
 var step_name:String:
 	get: 
 		return ($StepName as LineEdit).text
 	set(val):
 		($StepName as LineEdit).text = val
+		title = val
 var next_connections:Array[String]
 var step_type:QuestStep.StepType:
 	get:
@@ -39,6 +48,7 @@ var step_type:QuestStep.StepType:
 				$StepType.select(2)
 			_:
 				$StepType.select(0)
+		_set_title_color()
 var mapped_goals:Array:
 	get:
 		return get_goals().map(func(x:EditorQuestGoal): return x.name)
@@ -48,12 +58,14 @@ var is_entry_step:bool:
 	set(val):
 		$IsEntryButton.button_pressed = val
 		set_slot_enabled_left(4, not val)
+		_set_title_color()
 
 
 func setup(qs:SavedStep) -> void:
 	is_exit = qs.is_final_step
 	step_name = qs.step_name
 	position = qs.editor_coordinates
+	print(position)
 	is_entry_step = qs.is_entry_step
 	for g in qs.goals:
 		add_goal(g)
@@ -63,11 +75,28 @@ func setup(qs:SavedStep) -> void:
 func _update_is_exit(val:bool):
 	print("update is exit")
 	set_slot_enabled_right(0, not val)
+	_set_title_color()
 
 
-func _on_delete_node_button_up():
+func _on_delete_node_button_up() -> void:
 	print("Delete step")
 	get_parent().delete_node(name)
+
+
+func _set_title_color() -> void:
+	if is_exit:
+		theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.end))
+		return
+	if is_entry_step:
+		theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.start))
+		return
+	match step_type:
+		QuestStep.StepType.ALL:
+			theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.all))
+		QuestStep.StepType.ANY:
+			theme.set_color( &"title_color", &"Color", Color.hex(STEP_COLORS.any))
+		QuestStep.StepType.BRANCH:
+			theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.branch))
 
 
 ## Handles dealing with multiple output points with branches.
@@ -115,3 +144,4 @@ func add_goal(g:SavedGoal) -> EditorQuestGoal:
 func _ready() -> void:
 	$StepType.item_selected.connect(func(x:int): _set_is_branch(x == 2))
 	$IsEntryButton.toggled.connect(func(state:bool): set_slot_enabled_left(4, not state))
+	$StepName.text_changed.connect(func(x): title = x)

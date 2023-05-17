@@ -1,12 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://vpv70w0bqhoa"]
+[gd_scene load_steps=3 format=3 uid="uid://vpv70w0bqhoa"]
 
 [ext_resource type="Script" path="res://addons/journalgd/Editor/editor_quest_step.gd" id="1_kwd5h"]
+
+[sub_resource type="Theme" id="Theme_kjdmw"]
+GraphNode/colors/title_color = Color(0.875, 0.875, 0.875, 1)
+color/colors/title_color = Color(0, 0.733333, 0.247059, 0.231373)
 
 [node name="step" type="GraphNode"]
 process_mode = 3
 offset_right = 268.0
 offset_bottom = 324.0
 mouse_filter = 1
+theme = SubResource("Theme_kjdmw")
+resizable = true
 slot/0/left_enabled = false
 slot/0/left_type = 1
 slot/0/left_color = Color(1, 1, 1, 1)

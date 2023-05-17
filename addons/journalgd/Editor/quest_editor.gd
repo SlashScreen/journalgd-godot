@@ -17,6 +17,7 @@ func _ready():
 
 func _on_add_new_button_down() -> EditorQuestStep:
 	var n = STEP_PREFAB.instantiate()
+	n.position = scroll_offset
 	add_child(n)
 	return n
 
@@ -106,11 +107,11 @@ func _get_node_for_step_name(n:StringName) -> StringName:
 
 
 func _on_clear_pressed() -> void:
-	q_name_input.text = ""
 	clear()
 
 
 func clear():
+	q_name_input.text = ""
 	clear_connections()
 	for s in get_children():
 		delete_node(s.name)
