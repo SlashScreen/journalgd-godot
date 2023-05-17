@@ -17,7 +17,7 @@ func _ready():
 
 func _on_add_new_button_down() -> EditorQuestStep:
 	var n = STEP_PREFAB.instantiate()
-	n.position = scroll_offset
+	n.position_offset = scroll_offset
 	add_child(n)
 	return n
 

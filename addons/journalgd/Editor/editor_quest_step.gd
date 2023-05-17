@@ -6,11 +6,11 @@ extends GraphNode
 
 const GOAL_PREFAB = preload("res://addons/journalgd/Editor/goal_prefab.tscn")
 const STEP_COLORS = {
-	"all" : 0x390099FF, # purple
+	"all" : 0xFF5400FF, # orange
 	"any" : 0x9E0059FF, # magenta
-	"branch" : 0xFF0054FF, # pinkish
-	"start" : 0xFF5400FF, # orange
-	"end" : 0xFFBD00FF # yellow
+	"branch" : 0xFFBD00FF, # yellow
+	"start" : 0xABE188FF, # green
+	"end" : 0xFF0054FF, # pinkish
 }
 
 var is_exit:bool:
@@ -64,7 +64,7 @@ var is_entry_step:bool:
 func setup(qs:SavedStep) -> void:
 	is_exit = qs.is_final_step
 	step_name = qs.step_name
-	position = qs.editor_coordinates
+	position_offset = qs.editor_coordinates
 	print(position)
 	is_entry_step = qs.is_entry_step
 	for g in qs.goals:
