@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://addons/journalgd/Editor/editor_quest_step.gd" id="1_kwd5h"]
 
 [sub_resource type="Theme" id="Theme_kjdmw"]
-GraphNode/colors/title_color = Color(0.875, 0.875, 0.875, 1)
+Color/colors/title_color = Color(0, 0.733333, 0.247059, 0.231373)
+GraphNode/colors/title_color = Color(0.87451, 0.87451, 0.87451, 1)
 color/colors/title_color = Color(0, 0.733333, 0.247059, 0.231373)
 
 [node name="step" type="GraphNode"]

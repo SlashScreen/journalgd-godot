@@ -85,18 +85,18 @@ func _on_delete_node_button_up() -> void:
 
 func _set_title_color() -> void:
 	if is_exit:
-		theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.end))
+		theme.set_color(&"title_color", &"GraphNode", Color.hex(STEP_COLORS.end))
 		return
 	if is_entry_step:
-		theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.start))
+		theme.set_color(&"title_color", &"GraphNode", Color.hex(STEP_COLORS.start))
 		return
 	match step_type:
 		QuestStep.StepType.ALL:
-			theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.all))
+			theme.set_color(&"title_color", &"GraphNode", Color.hex(STEP_COLORS.all))
 		QuestStep.StepType.ANY:
-			theme.set_color( &"title_color", &"Color", Color.hex(STEP_COLORS.any))
+			theme.set_color( &"title_color", &"GraphNode", Color.hex(STEP_COLORS.any))
 		QuestStep.StepType.BRANCH:
-			theme.set_color(&"title_color", &"Color", Color.hex(STEP_COLORS.branch))
+			theme.set_color(&"title_color", &"GraphNode", Color.hex(STEP_COLORS.branch))
 
 
 ## Handles dealing with multiple output points with branches.
