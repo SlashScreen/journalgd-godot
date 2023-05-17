@@ -4,7 +4,7 @@
 
 [sub_resource type="Theme" id="Theme_kjdmw"]
 Color/colors/title_color = Color(0, 0.733333, 0.247059, 0.231373)
-GraphNode/colors/title_color = Color(0.87451, 0.87451, 0.87451, 1)
+GraphNode/colors/title_color = Color(1, 1, 1, 1)
 color/colors/title_color = Color(0, 0.733333, 0.247059, 0.231373)
 
 [node name="step" type="GraphNode"]

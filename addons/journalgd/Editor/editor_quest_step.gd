@@ -70,6 +70,7 @@ func setup(qs:SavedStep) -> void:
 	for g in qs.goals:
 		add_goal(g)
 	step_type = qs.step_type # put this at end because we need to have the goals count
+	_set_title_color()
 
 
 func _update_is_exit(val:bool):
@@ -142,6 +143,10 @@ func add_goal(g:SavedGoal) -> EditorQuestGoal:
 
 
 func _ready() -> void:
+	theme = theme.duplicate(true)
 	$StepType.item_selected.connect(func(x:int): _set_is_branch(x == 2))
 	$IsEntryButton.toggled.connect(func(state:bool): set_slot_enabled_left(4, not state))
 	$StepName.text_changed.connect(func(x): title = x)
+	resize_request.connect(func(new_minsize:Vector2):
+		size = new_minsize
+		)
