@@ -6,11 +6,11 @@ extends GraphNode
 
 const GOAL_PREFAB = preload("res://addons/journalgd/Editor/goal_prefab.tscn")
 const STEP_COLORS = {
-	"all" : 0xf2c45a,
-	"any" : 0x5e8c6a,
-	"branch" : 0xbfb35a,
-	"start" : 0xb1f33d,
-	"end" : 0xbb3f3b
+	"all" : 0x390099FF, # purple
+	"any" : 0x9E0059FF, # magenta
+	"branch" : 0xFF0054FF, # pinkish
+	"start" : 0xFF5400FF, # orange
+	"end" : 0xFFBD00FF # yellow
 }
 
 var is_exit:bool:
