@@ -10,7 +10,15 @@ var already_satisfied:bool = false:
 		return already_satisfied
 	set(val):
 		already_satisfied = val
-
+var data:Dictionary:
+	get:
+		return {
+			"progress": internal_amount,
+			"target": amount,
+			"filter": "",
+			"optional": optional,
+			"only_while_active": only_while_active
+		}
 @export var amount:int = 1
 @export var refID:String
 @export var baseID:String

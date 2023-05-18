@@ -82,10 +82,10 @@ func is_member_active(q_path) -> bool:
 		{"quest": var quest}:
 			return active_quests.has(quest)
 		{"quest": var quest, "step": var step}:
-			var q:QuestNode = get_member(quest)
+			var q:QuestNode = _get_member_node(quest)
 			return q._active_step.name == step
 		{"goal", ..}:
-			var g:QuestGoal = get_member(path_info)
+			var g:QuestGoal = _get_member_node(path_info)
 			return g.already_satisfied
 		_:
 			return false
@@ -100,10 +100,10 @@ func is_member_complete(q_path) -> bool:
 			return complete_quests.has(quest)
 		{"quest": var quest, "step": var step}:
 			var p = "%s/%s" % [quest, step]
-			var s:QuestStep = get_member(p)
+			var s:QuestStep = _get_member_node(p)
 			return s.is_already_complete
 		{"goal", ..}:
-			var g:QuestGoal = get_member(path_info)
+			var g:QuestGoal = _get_member_node(path_info)
 			return g.already_satisfied
 		_:
 			return false
@@ -116,7 +116,16 @@ func has_member_been_started(q_path) -> bool:
 
 
 ## Get a [QuestNode], [QuestStep], or [QuestGoal] from the quest path. Returns one of those 3 classes, or null if none found.
-func get_member(q_path) -> Variant:
+func get_member(q_path) -> Dictionary:
+	var path_info = q_path if q_path is String else _fuse_path(q_path)
+	var n = get_node_or_null(path_info)
+	if n:
+		return n.data
+	else:
+		return {}
+
+
+func _get_member_node(q_path) -> Variant:
 	var path_info = q_path if q_path is String else _fuse_path(q_path)
 	return get_node_or_null(path_info)
 
@@ -143,7 +152,7 @@ func register_quest_event(path:String, args:Dictionary = {}, undo:bool = false):
 				return
 			qnode.register_step_event(key, args, undo)
 		{"quest": var quest, "step": var step, "goal": var key}:
-			var snode:QuestStep = get_member({"quest": quest, "step": step})
+			var snode:QuestStep = _get_member_node({"quest": quest, "step": step})
 			if not snode:
 				return
 			snode.register_event(key, args, undo)

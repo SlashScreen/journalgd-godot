@@ -9,6 +9,12 @@ extends Node
 var qID:String
 var complete:bool = false
 var _active_step:QuestStep
+var data:Dictionary:
+	get:
+		return{
+			"active_step": _active_step.name,
+			"steps": get_children().map(func(x): return x.name)
+		}
 
 
 signal quest_complete(qID:String)

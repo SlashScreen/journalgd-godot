@@ -15,6 +15,13 @@ var next_step:QuestStep:
 			if(g.evaluate(false)):
 				return get_parent().get_node_or_null(next_steps[g.name] as String)
 		return null
+var data:Dictionary:
+	get:
+		return {
+			"type": type,
+			"is_final_step": is_final_step,
+			"goal_keys": get_children().map(func(x:Node): return x.name)
+		}
 
 
 func _init(eqs:SavedStep = null) -> void:
