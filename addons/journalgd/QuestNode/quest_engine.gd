@@ -115,7 +115,28 @@ func has_member_been_started(q_path) -> bool:
 	return is_member_active(path_info) or is_member_complete(path_info)
 
 
-## Get a [QuestNode], [QuestStep], or [QuestGoal] from the quest path. Returns one of those 3 classes, or null if none found.
+## Get a [QuestNode], [QuestStep], or [QuestGoal]'s data from the quest path. Returns a dictionary:
+## [CodeBlock]
+## Goal:
+## {
+##     "progress": int <- how many times this event has been triggered
+##     "target": int <- the amount of times to be triggered to be considered completed
+##     "filter": String
+##     "optional": bool
+##     "only_while_active": bool
+## }
+## Step:
+## {
+##     "type": StepType <- All, Any, Branch
+##     "is_first_step": bool
+##     "is_last_step": bool
+##     "goal_keys": Array[String] <- Keys of all goals
+## }
+## Quest:
+## {
+##     "steps": Array[String] <- Names of all steps
+## }
+## [/CodeBlock]
 func get_member(q_path) -> Dictionary:
 	var path_info = q_path if q_path is String else _fuse_path(q_path)
 	var n = get_node_or_null(path_info)
@@ -137,8 +158,7 @@ func _get_member_node(q_path) -> Variant:
 ## [code]args[/code] is an optional dictionary with the shape of
 ## [CodeBlock]
 ## {
-##  	"ref_id" : String <- Optional, ref id to check against for goal conditions.
-##  	"base_id" : String <- Optional, base id to check against for goal conditions.
+##  	"filter" : String <- Optional, filter to check against for goal conditions.
 ## }
 ## [/CodeBlock]
 ## Use "undo" to instad un-register an event, if you need to do that.
