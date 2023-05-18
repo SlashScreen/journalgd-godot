@@ -78,6 +78,7 @@ func open(q:SavedQuest) -> void:
 	
 	if not q:
 		return
+	
 	# Create steps
 	q_name_input.text = q.quest_id # set quest ID
 	var to_connect:Array[Dictionary] = []
@@ -93,7 +94,6 @@ func open(q:SavedQuest) -> void:
 			})
 	# Connect all
 	for conn in to_connect:
-		# TODO: save and load names of steps instead of node names, it's causing issues with connections
 		print("Connecting %s to %s from port %s" % [conn["from"], conn["to"], conn["from_port"]] )
 		make_connection(_get_node_for_step_name(conn["from"]), conn["from_port"], _get_node_for_step_name(conn["to"]), 0)
 
