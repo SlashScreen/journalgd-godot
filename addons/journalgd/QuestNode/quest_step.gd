@@ -52,6 +52,22 @@ func register_event(key:String, args:Dictionary, undo:bool):
 		g.attempt_register(key, args, undo)
 
 
+func save() -> Dictionary:
+	var goal_data = {}
+	for g in get_children():
+		goal_data[g.name] = g.save()
+	return {
+		"is_already_complete": is_already_complete,
+		"goal_data" : goal_data
+	}
+
+
+func load_data(data:Dictionary) -> void:
+	is_already_complete = data.is_already_complete
+	for g_key in data.goal_data:
+		get_node(g_key).load_data(data.goal_data[g_key])
+
+
 enum StepType {
 	ALL,
 	ANY,

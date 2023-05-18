@@ -4,7 +4,6 @@ class_name QuestGoal
 extends Node
 
 var optional:bool = false
-var key_registered:bool = false
 var internal_amount:int = 0
 var already_satisfied:bool = false:
 	get:
@@ -56,3 +55,17 @@ func attempt_register(r_key:String, args:Dictionary, undo:bool): # TODO: only_wh
 			return
 	# all checks passed, increase amount
 	internal_amount += -1 if undo else 1
+	if undo and already_satisfied:
+		already_satisfied = false
+
+
+func save() -> Dictionary:
+	return {
+		"already_satisfied" : already_satisfied,
+		"internal_amount" : internal_amount
+	}
+
+
+func load_data(data:Dictionary) -> void:
+	already_satisfied = data.already_satisfied
+	internal_amount = data.internal_amount

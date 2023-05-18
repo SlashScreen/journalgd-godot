@@ -48,3 +48,21 @@ func is_step_complete(id:String):
 	if not st:
 		return false
 	return st.evaluate(false)
+
+
+func save() -> Dictionary:
+	var step_data = {}
+	for s in get_children():
+		step_data[s.name] = s.save()
+	return {
+		"complete": complete,
+		"active_step": _active_step.name,
+		"step_data": step_data
+	}
+
+
+func load_data(data:Dictionary) -> void:
+	complete = data.complete
+	_active_step = get_node(data.active_step)
+	for s_name in data.step_data:
+		get_node(s_name).load_data(data.step_data[s_name])

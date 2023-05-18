@@ -132,6 +132,7 @@ func get_member(q_path) -> Variant:
 ##  	"base_id" : String <- Optional, base id to check against for goal conditions.
 ## }
 ## [/CodeBlock]
+## Use "undo" to instad un-register an event, if you need to do that.
 func register_quest_event(path:String, args:Dictionary = {}, undo:bool = false):
 	match _parse_quest_path(path):
 		{"quest": var key}:
@@ -178,3 +179,21 @@ func _fuse_path(path:Dictionary) -> String:
 	if path.has("goal"):
 		output += "/" + path["goal"]
 	return output
+
+
+func save() -> Dictionary:
+	var quest_data = {}
+	for quest in get_children():
+		quest_data[quest.name] = quest.save()
+	return {
+		"active_quests": active_quests,
+		"complete_quests": complete_quests,
+		"quest_data": quest_data
+	}
+
+
+func load_data(data:Dictionary) -> void:
+	active_quests = data.active_quests
+	complete_quests = data.complete_quests
+	for quest in data.quest_data:
+		get_node(quest).load_data(data.quest_data[quest])
