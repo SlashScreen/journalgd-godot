@@ -6,7 +6,6 @@ extends Node
 
 
 ## The quest data.
-var _q_data:Quest
 var qID:String
 var complete:bool = false
 var _active_step:QuestStep
@@ -39,9 +38,9 @@ func update():
 		_active_step = _active_step.next_step
 
 
-func register_step_event(key:String, args:Dictionary = {}):
+func register_step_event(key:String, args:Dictionary = {}, undo:bool = false):
 	for g in get_children():
-		g.register_event(key, args)
+		g.register_event(key, args, undo)
 
 
 func is_step_complete(id:String):

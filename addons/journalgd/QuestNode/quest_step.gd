@@ -47,9 +47,9 @@ func evaluate(is_active_step:bool) -> bool:
 
 
 ## Register a goal event.
-func register_event(key:String, args:Dictionary):
+func register_event(key:String, args:Dictionary, undo:bool):
 	for g in get_children():
-		g.attempt_register(key, args)
+		g.attempt_register(key, args, undo)
 
 
 enum StepType {

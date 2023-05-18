@@ -42,7 +42,7 @@ func evaluate(is_active_step:bool) -> bool:
 
 
 ## Attempt to register an event with this goal.
-func attempt_register(r_key:String, args:Dictionary): # TODO: only_while_active
+func attempt_register(r_key:String, args:Dictionary, undo:bool): # TODO: only_while_active
 	# check event name
 	if not r_key == name:
 		return
@@ -55,4 +55,4 @@ func attempt_register(r_key:String, args:Dictionary): # TODO: only_while_active
 		if args.has("baseid") and not args["baseid"] == baseID:
 			return
 	# all checks passed, increase amount
-	internal_amount += 1
+	internal_amount += -1 if undo else 1

@@ -132,20 +132,20 @@ func get_member(q_path) -> Variant:
 ##  	"base_id" : String <- Optional, base id to check against for goal conditions.
 ## }
 ## [/CodeBlock]
-func register_quest_event(path:String, args:Dictionary = {}):
+func register_quest_event(path:String, args:Dictionary = {}, undo:bool = false):
 	match _parse_quest_path(path):
 		{"quest": var key}:
-			propagate_call("register_step_event", [path, args])
+			propagate_call("register_step_event", [path, args, undo])
 		{"quest": var quest, "step": var key}:
 			var qnode = get_member({"quest": quest})
 			if not qnode:
 				return
-			qnode.register_step_event(key, args)
+			qnode.register_step_event(key, args, undo)
 		{"quest": var quest, "step": var step, "goal": var key}:
 			var snode:QuestStep = get_member({"quest": quest, "step": step})
 			if not snode:
 				return
-			snode.register_event(key, args)
+			snode.register_event(key, args, undo)
 		_:
 			return
 	_update_all_quests()
