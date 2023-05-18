@@ -4,8 +4,7 @@ extends Resource
 
 @export var goal_key:StringName
 @export var amount:int = 1
-@export var ref_id:String
-@export var base_id:String
+@export var filter:String
 @export var only_while_active:bool = true
 @export var optional:bool
 

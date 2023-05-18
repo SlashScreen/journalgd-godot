@@ -15,13 +15,12 @@ var data:Dictionary:
 		return {
 			"progress": internal_amount,
 			"target": amount,
-			"filter": "",
+			"filter": filter,
 			"optional": optional,
 			"only_while_active": only_while_active
 		}
 @export var amount:int = 1
-@export var refID:String
-@export var baseID:String
+@export var filter:String
 @export var only_while_active:bool = true
 # TODO: Multiple events to satisfy, match against refID
 # TODO: Allow undoing events
@@ -32,8 +31,7 @@ func _init(eqg:SavedGoal = null) -> void:
 		return
 	optional = eqg.optional
 	amount = eqg.amount
-	refID = eqg.ref_id
-	baseID = eqg.base_id
+	filter = eqg.filter
 	only_while_active = eqg.only_while_active
 	name = eqg.goal_key
 
@@ -53,13 +51,9 @@ func attempt_register(r_key:String, args:Dictionary, undo:bool): # TODO: only_wh
 	# check event name
 	if not r_key == name:
 		return
-	# check for invalid refID
-	if not refID == "":
-		if args.has("refid") and not args["refid"] == refID:
-			return
-	# check for invalid baseID
-	if not baseID == "":
-		if args.has("baseid") and not args["baseid"] == baseID:
+	# check for invalid filter
+	if not filter == "":
+		if args.has("filter") and not args["filter"] == filter:
 			return
 	# all checks passed, increase amount
 	internal_amount += -1 if undo else 1
