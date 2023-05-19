@@ -24,9 +24,12 @@ func test_quest_load() -> void:
 
 
 func test_quest_event_path() -> void:
+	watch_signals(quest_engine)
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s1")
 	quest_engine.register_quest_event("testing_quest/s1g1")
 	assert_eq(quest_engine.get_child(0)._active_step.name, &"s2")
+	assert_signal_emitted(quest_engine, "goal_updated")
+	assert_signal_emitted(quest_engine, "step_updated")
 
 
 func test_quest_event_no_path() -> void:
@@ -59,12 +62,14 @@ func test_quest_active() -> void:
 
 
 func test_quest_completion() -> void:
+	watch_signals(quest_engine)
 	quest_engine.start_quest("testing_quest")
 	quest_engine.register_quest_event("testing_quest/s1g1")
 	quest_engine.register_quest_event("testing_quest/s2g1")
 	assert_false(quest_engine.is_member_complete("testing_quest"))
 	quest_engine.register_quest_event("testing_quest/s3g1")
 	assert_true(quest_engine.is_member_complete("testing_quest"))
+	assert_signal_emitted(quest_engine, "quest_complete")
 
 
 func test_step_active() -> void:

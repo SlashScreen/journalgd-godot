@@ -14,7 +14,6 @@ func _init(eqg:EditorQuestGoal = null) -> void:
 		return
 	goal_key = eqg.goal_key
 	amount = eqg.amount
-	ref_id = eqg.ref_id
-	base_id = eqg.base_id
+	filter = eqg.filter
 	only_while_active = eqg.only_while_active
 	optional = eqg.optional

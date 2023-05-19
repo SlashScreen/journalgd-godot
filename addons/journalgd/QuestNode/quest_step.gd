@@ -5,7 +5,12 @@ extends Node
 
 var type:StepType = StepType.ALL
 var is_final_step:bool = false
-var is_already_complete:bool
+var is_already_complete:bool:
+	get:
+		return is_already_complete
+	set(val):
+		update_signal.emit("%s/%s" % [get_parent().name, name], data)
+		is_already_complete = val
 var next_steps:Dictionary = {}
 var next_step:QuestStep:
 	get:
@@ -22,17 +27,19 @@ var data:Dictionary:
 			"is_final_step": is_final_step,
 			"goal_keys": get_children().map(func(x:Node): return x.name)
 		}
+var update_signal:Signal
 
 
-func _init(eqs:SavedStep = null) -> void:
+func _init(eqs:SavedStep = null, step_update_signal:Signal = Signal(), goal_update_signal:Signal = Signal()) -> void:
 	if not eqs:
 		return
 	type = eqs.step_type
 	is_final_step = eqs.is_final_step
 	name = eqs.step_name
 	next_steps = eqs.connections
+	update_signal = step_update_signal
 	for g in eqs.goals:
-		add_child(QuestGoal.new(g))
+		add_child(QuestGoal.new(g, goal_update_signal))
 
 
 func evaluate(is_active_step:bool) -> bool:

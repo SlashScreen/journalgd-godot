@@ -15,10 +15,7 @@ var data:Dictionary:
 			"active_step": _active_step.name,
 			"steps": get_children().map(func(x): return x.name)
 		}
-
-
-signal quest_complete(qID:String)
-signal quest_updated(qID:String)
+var update_signal:Signal
 
 
 # Might be useless
@@ -39,7 +36,7 @@ func update():
 	if _active_step.evaluate(true): #if active step is true, move to the next one
 		if _active_step.is_final_step:
 			complete = true
-			quest_complete.emit(qID)
+			update_signal.emit(name, data)
 			return
 		_active_step = _active_step.next_step
 

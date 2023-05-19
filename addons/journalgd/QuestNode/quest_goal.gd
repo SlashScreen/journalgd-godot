@@ -4,11 +4,18 @@ class_name QuestGoal
 extends Node
 
 var optional:bool = false
-var internal_amount:int = 0
+var update_signal:Signal
+var internal_amount:int = 0:
+	get:
+		return internal_amount
+	set(val):
+		_emit_updated()
+		internal_amount = val
 var already_satisfied:bool = false:
 	get:
 		return already_satisfied
 	set(val):
+		_emit_updated()
 		already_satisfied = val
 var data:Dictionary:
 	get:
@@ -26,13 +33,14 @@ var data:Dictionary:
 # TODO: Allow undoing events
 
 
-func _init(eqg:SavedGoal = null) -> void:
+func _init(eqg:SavedGoal = null, goal_update_signal:Signal = Signal()) -> void:
 	if not eqg:
 		return
 	optional = eqg.optional
 	amount = eqg.amount
 	filter = eqg.filter
 	only_while_active = eqg.only_while_active
+	update_signal = goal_update_signal
 	name = eqg.goal_key
 
 
@@ -71,3 +79,7 @@ func save() -> Dictionary:
 func load_data(data:Dictionary) -> void:
 	already_satisfied = data.already_satisfied
 	internal_amount = data.internal_amount
+
+
+func _emit_updated() -> void:
+	update_signal.emit("%s/%s/%s" % [get_parent().get_parent().name, get_parent().name, name], data)

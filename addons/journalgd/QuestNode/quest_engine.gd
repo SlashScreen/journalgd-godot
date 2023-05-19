@@ -16,9 +16,11 @@ signal quest_started(q_id:String)
 ## Emitted when a quest is complete.
 signal quest_complete(q_id:String)
 ## Emitted when a quest goal has been updated - the amount has been increased, or it is marked as complete.
-signal goal_updated(quest_path:String) # TODO
+signal goal_updated(quest_path:String, data:Dictionary)
 ## Emitted when a step is updated - when a step is marked as complete.
-signal step_updated(quest_path:String) # TODO
+signal step_updated(quest_path:String, data:Dictionary)
+## Emitted when a quest updates.
+signal quest_updated(quest_path:String, data:Dictionary)
 
 
 ## Loads all quests from the [code]biznasty/quests_directory[/code] project setting, and then instantiates them as child [QuestObject]s.
@@ -61,7 +63,8 @@ func add_node_from_saved(q:SavedQuest) -> void:
 	
 	# Create steps
 	for s in q.steps:
-		var s_node = QuestStep.new(q.steps[s])
+		var s_node = QuestStep.new(q.steps[s], step_updated, goal_updated)
+		s_node.update_signal = quest_updated
 		if q.steps[s].is_entry_step:
 			q_node._active_step = s_node 
 		q_node.add_child(s_node)
@@ -167,7 +170,7 @@ func register_quest_event(path:String, args:Dictionary = {}, undo:bool = false):
 		{"quest": var key}:
 			propagate_call("register_step_event", [path, args, undo])
 		{"quest": var quest, "step": var key}:
-			var qnode = get_member({"quest": quest})
+			var qnode = _get_member_node({"quest": quest})
 			if not qnode:
 				return
 			qnode.register_step_event(key, args, undo)
