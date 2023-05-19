@@ -64,7 +64,6 @@ func add_node_from_saved(q:SavedQuest) -> void:
 	# Create steps
 	for s in q.steps:
 		var s_node = QuestStep.new(q.steps[s], step_updated, goal_updated)
-		s_node.update_signal = quest_updated
 		if q.steps[s].is_entry_step:
 			q_node._active_step = s_node 
 		q_node.add_child(s_node)
