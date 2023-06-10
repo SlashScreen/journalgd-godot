@@ -69,7 +69,7 @@ func save() -> void:
 		quest.steps[_get_step_name_for_node(conn["from"])].add_named_connection(conn["from_port"], _get_step_name_for_node(conn["to"]))
 	
 	# Pack and save
-	ResourceSaver.save(quest, (ProjectSettings.get_setting("journalgd/quests_directory") + "/%s.tres" % quest.quest_id))
+	ResourceSaver.save(quest, (ProjectSettings.get_setting("journalgd/quests_path") + "/%s.tres" % quest.quest_id))
 
 
 func open(q:SavedQuest) -> void:

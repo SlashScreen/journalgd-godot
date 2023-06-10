@@ -48,7 +48,7 @@ func _edit(object: Object) -> void:
 
 
 func _enable_plugin() -> void:
-	ProjectSettings.set_setting("journalgd/quests_path", "res://Quests")
+	ProjectSettings.set_setting("journalgd/quests_path", "res://quests")
 
 
 func _disable_plugin() -> void:
